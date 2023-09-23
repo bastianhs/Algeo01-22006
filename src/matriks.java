@@ -1,4 +1,4 @@
-package hitung;
+package src;
 
 import java.util.Scanner;
 
@@ -43,6 +43,16 @@ public class matriks {
             }
         }
         return identitas;
+    }
+    public void gabung2matriks (matriks mat1, matriks mat2) {
+        for (int i = 0; i < mat1.baris; i++) {
+            for (int j = 0; j < mat1.kolom; j++) {
+                this.setelmt(i, j, mat1.getelmt(i, j));
+            }
+        }
+        for (int i = 0; i < mat2.baris; i++) {
+            this.setelmt(i, mat1.kolom, mat2.getelmt(i, 0));
+        }
     }
 
     public boolean isrowempty (int baris) {
@@ -97,7 +107,19 @@ public class matriks {
                 }
             }
         }
-        tulismatriks();
+    }
+
+    public int hitungjumlahswap() {
+        int jumlah = 0;
+        for(int i = 0; i < this.baris; i++) {
+            for (int j = i + 1; j < this.baris; j++) {
+                if(getidxleadingone(i) > getidxleadingone(j)) {
+                    swap(i,j);
+                    jumlah += 1;
+                }
+            }
+        }
+        return jumlah;
     }
 
     public void swap (int baris1, int baris2) {
@@ -119,7 +141,7 @@ public class matriks {
         int parametrik = 0;
         for (int i = 0; i < this.baris; i++) {
             if (isrowempty(i) == true) {
-                if (getelmt(i, this.baris) == 0) {
+                if (getelmt(i, this.baris-1) == 0) {
                     parametrik += 1;
                 }
                 else {
@@ -130,7 +152,7 @@ public class matriks {
         if (tidakadasolusi > 0) {
             System.out.println("Tidak ada solusi");
         }
-        else if ((parametrik > 0) || (this.kolom != this.baris) ) {
+        else if ((parametrik > 0)) { //|| (this.kolom != this.baris)// ) {
             solusiparametrik ();
         }
         else {
@@ -144,7 +166,6 @@ public class matriks {
             leadingone(i);
             int idx = getidxleadingone(i);
             cekbawah(i, idx);
-            tulismatriks();
         }
         for (int i = this.baris-1; i >= 0; i--) {
             leadingone(i);
@@ -195,6 +216,16 @@ public class matriks {
         return j-1;
     }
 
+    public int cekjumlahindeks(int baris) {
+        int jumlahangka = 0;
+        for (int i = 0; i < this.kolom-1; i++) {
+            if (getelmt(baris, i) > 0) {
+                jumlahangka += 1;
+            }
+        }
+        return jumlahangka;
+    }
+
     public void cekbawah(int baris, int kolom) {
         for (int i = baris+1; i < this.baris; i++) { // cek kolom yang sama dengan leading one baris atas
             if (getelmt(i, kolom) != 0.0) {
@@ -219,10 +250,20 @@ public class matriks {
 
     public void solusiparametrik() {
         System.out.println("Parametrik masih susah");
-        double[] angka = new double[this.kolom-1];
-        char[] huruf = new char[this.kolom-1];
+        double[][] angka = new double[this.kolom-1][10];
+        char[][] huruf = new char[this.kolom-1][10];
+        char[] alfabet = {'a','b','c','d'};
         for (int i = 0; i < this.kolom-1; i++) {
-            angka[i] = 100000;
+            angka[i][0] = 100000;
+        }
+        
+    }
+
+    public void allzero() {
+        for(int i = 0; i < this.baris; i++) {
+            for(int j = 0; j < this.kolom; j++) {
+                this.setelmt(i, j, 0);
+            }
         }
     }
 
@@ -247,8 +288,9 @@ public class matriks {
         }
     }
 
-    public void balikanreduksi (matriks identitas) {
+    public matriks balikanreduksi (matriks identitas) {
         matriks gabung = new matriks(baris, kolom*2);
+        matriks balikan = new matriks(baris, kolom);
         for (int i = 0; i < this.baris; i++) {
             for (int j = 0; j < this.kolom; j++) {
                 gabung.setelmt(i, j, getelmt(i, j));
@@ -266,6 +308,103 @@ public class matriks {
             }
             System.out.println();
         }
+        System.out.println();
+        for (int i = 0; i < gabung.baris; i++) {
+            for (int j = this.kolom; j < gabung.kolom; j++) {
+                balikan.setelmt(i, j-gabung.baris, gabung.getelmt(i, j));
+            }
+        }
+        return balikan;
+    }
+
+    public matriks balikanadjoin() {
+        double determinan = this.determinanbarisreduksi();
+        matriks kofaktor = new matriks(baris, kolom);
+        if (determinan == 0) {
+            kofaktor.allzero();
+            return kofaktor;
+        }
+        else {
+            
+        }
+        return kofaktor;
+    }
+
+    public matriks buatkofaktor() {
+        matriks kofaktor = new matriks(this.kolom, this.baris);
+        matriks tampung = new matriks(this.kolom-1, this.baris-1);
+        for (int i = 0; i < this.baris; i++) {
+            for (int j = 0; j < this.kolom; j++) {
+                int barisawal = 0;
+                for (int row = 0; row < this.baris; row++) {
+                    int kolomawal = 0;
+                    for (int col = 0; col < this.kolom; col++) {
+                        if (row != i && col != j) {
+                            tampung.setelmt(barisawal, kolomawal, this.getelmt(row, col));
+                            kolomawal += 1;
+                        }
+                    }
+                    if (row != i) {
+                        barisawal += 1;
+                    }              
+                }
+                if (i+j % 2 == 0) {
+                    kofaktor.setelmt(i, j, tampung.determinanbarisreduksi());
+                }
+                else {
+                    kofaktor.setelmt(i, j, tampung.determinanbarisreduksi()*-1);
+                }
+            }
+        }
+        return kofaktor;       
+    }
+
+    public double determinanbarisreduksi() {
+        double jumlahkali = 1;
+        int gantibaris = hitungjumlahswap();
+        cekswap();
+        for (int i = 0; i < this.baris; i++) {
+            jumlahkali = jumlahkali * getelmt(i, getidxleadingone(i));
+            leadingone(i);
+            int idx = getidxleadingone(i);
+            cekbawah(i, idx);
+        }
+        if (gantibaris % 2 == 0) {
+            return jumlahkali;
+        }
+        return jumlahkali*-1;
+    }
+
+    public double determinankofaktor() {
+        if (this.baris == 2 && this.kolom == 2) {
+            return (this.getelmt(0,0)*this.getelmt(1,1)- this.getelmt(1,0)*this.getelmt(0,1));
+        } 
+        else {
+            float determinan = 0;
+            for (int i = 0; i < this.kolom; i++) {
+                int barisawal = 0;
+                matriks det = new matriks(this.baris-1,this.kolom-1);
+                for(int baris = 1; baris < this.baris; baris++) {
+                    int kolomawal = 0;
+                    for(int kolom = 0; kolom < this.kolom; kolom++) {
+                        if (kolom == i) {
+                            continue;
+                        }
+                        else {
+                            det.setelmt(barisawal, kolomawal, this.getelmt(baris,kolom));
+                            kolomawal += 1;
+                        }
+                    }
+                    barisawal += 1;
+                }
+                if (i % 2 == 0) {
+                    determinan += this.getelmt(0, i) * det.determinankofaktor();
+                }
+                else {
+                    determinan += this.getelmt(0, i) * det.determinankofaktor() *-1;
+                }
+            }
+            return determinan;
+        }
     }
 }
-
