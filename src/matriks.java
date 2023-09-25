@@ -1,5 +1,8 @@
-package src;
 
+
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class matriks {
@@ -67,7 +70,6 @@ public class matriks {
         }
         return false;
     }
-
     // Untuk mencari baris yang hanya terdapat satu angka
     public boolean onlyone (int baris) {
         int nonkosong = 0;
@@ -87,6 +89,82 @@ public class matriks {
             for (int j = 0; j < this.kolom; j++) {
                 double val = scan.nextDouble();
                 setelmt(i, j, val);
+            }
+        }
+    }
+
+    // Baca Matrix dari .txt (tambahan)
+    public void bacamatriksfile() {
+        String namaFile;
+        String[][] matrix_string = new String[100][100]; // asumsi kapasitas matriks tidak akan melebihi 100x100
+        // menginisiasi matriks_string dengan spasi
+        for (int i = 0; i < 100; i++) {
+            for (int j = 0; j < 100; j++) {
+                matrix_string[i][j] = "0";
+            }
+        }
+        
+        System.out.println("Masukkan nama file: ");
+        System.out.println("Contoh: matriks.txt");
+        namaFile = scan.nextLine();
+        try {
+            // baca file
+            File myFile = new File(namaFile);
+            Scanner scanfile = new Scanner(myFile);
+            
+            // memindahkan isi file
+            int row = 0;
+            int max_col = 0;
+            while (scanfile.hasNextLine()) {
+                String data = scanfile.nextLine(); // membaca perbaris
+                // menyimpan karakter indeks ke-i pada string "data"
+                int indeks = 0;
+                char current_char = data.charAt(indeks);
+                // memindahkan karakter ke matriks
+                int col = 0;
+                while (current_char != '\n') {
+                    if (current_char != ' ') {
+                        if (matrix_string[row][col] == "0") {
+                            matrix_string[row][col] = String.valueOf(current_char);
+                        } else {
+                            matrix_string[row][col] += current_char;
+                        }
+                        if (indeks < data.length()-1) {
+                            indeks += 1;
+                            current_char = data.charAt(indeks);
+                        } else {
+                            break;
+                        }
+
+                    } else {
+                        col += 1;
+                        indeks += 1;
+                        current_char = data.charAt(indeks);
+                        if (col > max_col) {
+                            max_col = col;
+                        }
+                    }
+                }
+                row += 1;
+            }
+            // mengubah matriks_string ke matriks (double)
+            this.baris = row;
+            this.kolom = max_col+1; // ditambah satu karena pada pada saat looping, indeks kolom tidak akan bertambah saat menemukan spasi
+            this.matrix = new double[this.baris][this.kolom];
+            for (int i = 0; i < this.baris; i++) {
+                for (int j = 0; j < this.kolom; j++){
+                    this.matrix[i][j] = Double.parseDouble(matrix_string[i][j]);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            // file tdak ditemukan
+            System.out.println("File " + namaFile + " tidak ditemukan");
+            System.out.println("Apakah anda ingin mengulangi memasukkan nama file? (y/n)");
+            String ulang = scan.nextLine();
+            if (ulang.equals("y") || ulang.equals("Y")) {
+                bacamatriksfile();
+            } else {
+                System.out.println("Terima kasih");
             }
         }
     }
@@ -142,7 +220,7 @@ public class matriks {
         int parametrik = 0;
         for (int i = 0; i < this.baris; i++) {
             if (isrowempty(i) == true) {
-                if (getelmt(i, this.kolom-1) == 0) {
+                if (getelmt(i, this.baris-1) == 0) {
                     parametrik += 1;
                 }
                 else {
@@ -172,45 +250,6 @@ public class matriks {
             leadingone(i);
             int idx = getidxleadingone(i);
             cekatas(i, idx);
-        }
-        int tidakadasolusi = 0;
-        int parametrik = 0;
-        for (int i = 0; i < this.baris; i++) {
-            if (isrowempty(i) == true) {
-                if (getelmt(i, this.kolom-1) == 0) {
-                    parametrik += 1;
-                }
-                else {
-                    tidakadasolusi += 1;
-                }
-            }
-        }
-        if (tidakadasolusi > 0) {
-            System.out.println("Tidak ada solusi");
-        }
-        else if ((parametrik > 0)) { //|| (this.kolom != this.baris)// ) {
-            solusiparametrik ();
-        }
-        else {
-            solusiunik();
-        }
-    }
-
-    public void kramer() {
-        matriks sementara = new matriks(baris, kolom-1);
-        double determinan;
-        for (int i = 0; i < this.baris; i++) {
-            for (int row = 0; row < this.baris; row++) {
-                for (int col = 0; col < sementara.kolom; col++) {
-                    if (i == col) {
-                        sementara.setelmt(row, col, this.getelmt(row, kolom-1));
-                    }
-                    else {
-                        sementara.setelmt(row, col, this.getelmt(row, col));
-                    }
-                }
-            }
-            sementara.tulismatriks();
         }
     }
 
@@ -358,20 +397,14 @@ public class matriks {
     }
 
     public matriks balikanadjoin() {
-        double determinan = this.determinankofaktor();
+        double determinan = this.determinanbarisreduksi();
         matriks kofaktor = new matriks(baris, kolom);
         if (determinan == 0) {
             kofaktor.allzero();
             return kofaktor;
         }
         else {
-            kofaktor = this.buatkofaktor();
-            kofaktor.transpose();
-            for (int i = 0; i < kofaktor.baris; i++) {
-                for (int j = 0; j < kofaktor.kolom; j++) {
-                    kofaktor.setelmt(i, j, (1/determinan)*kofaktor.getelmt(i, j));
-                }
-            }
+            
         }
         return kofaktor;
     }
@@ -394,26 +427,15 @@ public class matriks {
                         barisawal += 1;
                     }              
                 }
-                if ((i+j) % 2 == 0) {
+                if (i+j % 2 == 0) {
                     kofaktor.setelmt(i, j, tampung.determinanbarisreduksi());
                 }
-                else{
+                else {
                     kofaktor.setelmt(i, j, tampung.determinanbarisreduksi()*-1);
                 }
             }
         }
         return kofaktor;       
-    }
-
-    public void transpose() {
-        double temp;
-        for (int i = 0; i < this.baris; i ++) {
-            for (int j = i; j < this.kolom; j++) {
-                temp = getelmt(i, j);
-                setelmt(i, j, getelmt(j, i));
-                setelmt(j, i, temp);
-            }
-        }
     }
 
     public double determinanbarisreduksi() {
