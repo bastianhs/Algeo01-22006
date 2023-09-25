@@ -67,6 +67,7 @@ public class matriks {
         }
         return false;
     }
+
     // Untuk mencari baris yang hanya terdapat satu angka
     public boolean onlyone (int baris) {
         int nonkosong = 0;
@@ -141,7 +142,7 @@ public class matriks {
         int parametrik = 0;
         for (int i = 0; i < this.baris; i++) {
             if (isrowempty(i) == true) {
-                if (getelmt(i, this.baris-1) == 0) {
+                if (getelmt(i, this.kolom-1) == 0) {
                     parametrik += 1;
                 }
                 else {
@@ -171,6 +172,45 @@ public class matriks {
             leadingone(i);
             int idx = getidxleadingone(i);
             cekatas(i, idx);
+        }
+        int tidakadasolusi = 0;
+        int parametrik = 0;
+        for (int i = 0; i < this.baris; i++) {
+            if (isrowempty(i) == true) {
+                if (getelmt(i, this.kolom-1) == 0) {
+                    parametrik += 1;
+                }
+                else {
+                    tidakadasolusi += 1;
+                }
+            }
+        }
+        if (tidakadasolusi > 0) {
+            System.out.println("Tidak ada solusi");
+        }
+        else if ((parametrik > 0)) { //|| (this.kolom != this.baris)// ) {
+            solusiparametrik ();
+        }
+        else {
+            solusiunik();
+        }
+    }
+
+    public void kramer() {
+        matriks sementara = new matriks(baris, kolom-1);
+        double determinan;
+        for (int i = 0; i < this.baris; i++) {
+            for (int row = 0; row < this.baris; row++) {
+                for (int col = 0; col < sementara.kolom; col++) {
+                    if (i == col) {
+                        sementara.setelmt(row, col, this.getelmt(row, kolom-1));
+                    }
+                    else {
+                        sementara.setelmt(row, col, this.getelmt(row, col));
+                    }
+                }
+            }
+            sementara.tulismatriks();
         }
     }
 
@@ -318,14 +358,20 @@ public class matriks {
     }
 
     public matriks balikanadjoin() {
-        double determinan = this.determinanbarisreduksi();
+        double determinan = this.determinankofaktor();
         matriks kofaktor = new matriks(baris, kolom);
         if (determinan == 0) {
             kofaktor.allzero();
             return kofaktor;
         }
         else {
-            
+            kofaktor = this.buatkofaktor();
+            kofaktor.transpose();
+            for (int i = 0; i < kofaktor.baris; i++) {
+                for (int j = 0; j < kofaktor.kolom; j++) {
+                    kofaktor.setelmt(i, j, (1/determinan)*kofaktor.getelmt(i, j));
+                }
+            }
         }
         return kofaktor;
     }
@@ -348,15 +394,26 @@ public class matriks {
                         barisawal += 1;
                     }              
                 }
-                if (i+j % 2 == 0) {
+                if ((i+j) % 2 == 0) {
                     kofaktor.setelmt(i, j, tampung.determinanbarisreduksi());
                 }
-                else {
+                else{
                     kofaktor.setelmt(i, j, tampung.determinanbarisreduksi()*-1);
                 }
             }
         }
         return kofaktor;       
+    }
+
+    public void transpose() {
+        double temp;
+        for (int i = 0; i < this.baris; i ++) {
+            for (int j = i; j < this.kolom; j++) {
+                temp = getelmt(i, j);
+                setelmt(i, j, getelmt(j, i));
+                setelmt(j, i, temp);
+            }
+        }
     }
 
     public double determinanbarisreduksi() {

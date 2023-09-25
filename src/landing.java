@@ -36,14 +36,25 @@ public class landing {
 				gabungan.gabung2matriks(mat1,mat2);
 				gabungan.gauss();
 			}
-			if (pilihan2 == 3) {
-				if (pilihan2 == 1) {
+			// if (pilihan2 == 3) {
+			// 	if (pilihan2 == 1) {
+			// 	matriks mat1 = new matriks(baris, kolom);
+			// 	mat1.bacamatriks();
+			// 	matriks mat2 = new matriks(baris, 1);
+			// 	mat2.bacamatriks();
+				
+			// 	}
+			// }
+			if (pilihan2 == 4) {
 				matriks mat1 = new matriks(baris, kolom);
 				mat1.bacamatriks();
+				double determinanutama = mat1.determinankofaktor();
 				matriks mat2 = new matriks(baris, 1);
 				mat2.bacamatriks();
-				
-				}
+				matriks gabungan = new matriks(baris, kolom+1);
+				gabungan.gabung2matriks(mat1,mat2);
+				gabungan.tulismatriks();
+				gabungan.kramer();
 			}
 		}
 		
