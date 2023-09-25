@@ -196,7 +196,7 @@ public class matriks {
         }
     }
 
-    public void kramer() {
+    public void kramer(double determinanutama) {
         matriks sementara = new matriks(baris, kolom-1);
         double determinan;
         for (int i = 0; i < this.baris; i++) {

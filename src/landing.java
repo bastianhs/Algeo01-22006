@@ -54,7 +54,7 @@ public class landing {
 				matriks gabungan = new matriks(baris, kolom+1);
 				gabungan.gabung2matriks(mat1,mat2);
 				gabungan.tulismatriks();
-				gabungan.kramer();
+				gabungan.kramer(determinanutama);
 			}
 		}
 		
