@@ -31,7 +31,7 @@ public class spl {
         if (tidakadasolusi > 0) {
             System.out.println("Tidak ada solusi");
         }
-        else if ((parametrik > 0)) { //|| (this.kolom != this.baris)// ) {
+        else if ((parametrik > 0)  || (m.kolom != m.baris)) {// ) {
             m.solusiparametrik ();
         }
         else {
@@ -69,7 +69,7 @@ public class spl {
             System.out.println("Tidak ada solusi");
             mathasil.allzero();
         }
-        else if ((parametrik > 0)) { //|| (this.kolom != this.baris)// ) {
+        else if ((parametrik > 0)  || (m.kolom-1 != m.baris)) {// ) {
             m.solusiparametrik ();
             mathasil.allzero();
         }
@@ -77,6 +77,21 @@ public class spl {
             mathasil = m.solusiunik();
         }
         return mathasil;
+    }
+
+    public static matriks gaussbalikan(matriks m) {
+        m.cekswap();
+        for (int i = 0; i < m.baris; i++) {
+            m.leadingone(i);
+            int idx = m.getidxleadingone(i);
+            m.cekbawah(i, idx);
+        }
+        for (int i = m.baris-1; i >= 0; i--) {
+            m.leadingone(i);
+            int idx = m.getidxleadingone(i);
+            m.cekatas(i, idx);
+        }
+        return m;
     }
 
     public static matriks splbalikan(matriks m) {
