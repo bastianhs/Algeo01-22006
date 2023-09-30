@@ -183,7 +183,7 @@ public class bicubicspline {
             namaFile = scan.nextLine();
             
             // membuat file
-            File file = new File(namaFile);
+            File file = new File("test/" + namaFile);
             if (file.exists()) { // jika filenya sudah ada
                 System.out.println("file " + namaFile + " sudah ada!");
                 System.out.println("Apakah anda ingin mengulangi memasukkan nama file? (y/n)");
