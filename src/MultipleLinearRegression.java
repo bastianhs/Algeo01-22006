@@ -11,7 +11,9 @@ public abstract class MultipleLinearRegression {
         double sum = 0;
         for (int i = 0; i < equation.getkolom(); i++) {
             double term = equation.getelmt(0, i);
-            if (i > 0) term *= independentVariables.getelmt(0, i - 1);
+            if (i > 0) {
+                term *= independentVariables.getelmt(0, i - 1);
+            }
             sum += term;
         }
 
@@ -19,32 +21,38 @@ public abstract class MultipleLinearRegression {
     }
 
     private static matriks findNormalEstimationEquation(matriks sampleData) {
-        matriks nee = new matriks(sampleData.getkolom(), sampleData.getkolom() + 1);
-        for (int i = 0; i < nee.getbaris(); i++) {
-            for (int j = i; j < nee.getkolom(); j++) {
-                double element = elementOfNEEMatrix(sampleData, i, j);
-                nee.setelmt(i, j, element);
-                if (i != j && j < nee.getkolom() - 1) nee.setelmt(j, i, element);
+        matriks normalEstimationEquation = new matriks(sampleData.getkolom(), sampleData.getkolom() + 1);
+        for (int i = 0; i < normalEstimationEquation.getbaris(); i++) {
+            for (int j = i; j < normalEstimationEquation.getkolom(); j++) {
+                double element = calculateElementOfNEEMatrix(sampleData, i, j);
+                normalEstimationEquation.setelmt(i, j, element);
+                if (i != j && j < normalEstimationEquation.getkolom() - 1) {
+                    normalEstimationEquation.setelmt(j, i, element);
+                }
             }
         }
 
-        return nee;
+        return normalEstimationEquation;
     }
 
-    private static double elementOfNEEMatrix(matriks sampleData, int indexRow, int indexColumn) {
-        int nRowNEEMatrix = sampleData.getkolom();
-        int nColumnNEEMatrix = sampleData.getkolom() + 1;
+
+    /*
+     * NEE is an abbreviation of Normal Estimation Equation
+     */
+    private static double calculateElementOfNEEMatrix(matriks sampleData, int indexRow, int indexColumn) {
+        int numberOfRowOfNEEMatrix = sampleData.getkolom();
+        int numberOfColumnOfNEEMatrix = sampleData.getkolom() + 1;
         double sum = 0;
         for (int i = 1; i <= sampleData.getbaris(); i++) {
             double formulaOfSigma = 1;
-            if (0 < indexRow && indexRow < nRowNEEMatrix) {
+            if (0 < indexRow && indexRow < numberOfRowOfNEEMatrix) {
                 formulaOfSigma *= sampleData.getelmt(i - 1, indexRow - 1);
             }
             
-            if (0 < indexColumn && indexColumn < nColumnNEEMatrix - 1) {
+            if (0 < indexColumn && indexColumn < numberOfColumnOfNEEMatrix - 1) {
                 formulaOfSigma *= sampleData.getelmt(i - 1, indexColumn - 1);
             }
-            else if (indexColumn == nColumnNEEMatrix - 1) {
+            else if (indexColumn == numberOfColumnOfNEEMatrix - 1) {
                 formulaOfSigma *= sampleData.getelmt(i - 1, sampleData.getkolom() - 1);
             }
 
