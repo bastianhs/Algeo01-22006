@@ -1,9 +1,13 @@
-
-
+import java.text.DecimalFormat;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.lang.Math;
+
+import java.text.DecimalFormat;
+import java.util.Scanner;
+import java.lang.Math;
 
 public class matriks {
     Scanner scan = new Scanner(System.in);
@@ -33,6 +37,11 @@ public class matriks {
         this.matrix[i][j] = val;
     }
 
+    public matriks ubahukuran (int row, int col) {
+        matriks mat1 = new matriks(row, col);
+        return mat1;
+    }
+
     public matriks identitas (int m, int n) {
         matriks identitas = new matriks(m,n);
         for (int i = 0; i < m; i++) {
@@ -58,6 +67,14 @@ public class matriks {
         }
     }
 
+    public void kurangibaris() {
+        this.baris = this.baris-1;
+    }
+
+    public void kurangikolom() {
+        this.kolom = this.kolom- 1;
+    }
+
     public boolean isrowempty (int baris) {
         int jumlahkosong = 0;
         for (int i = 0; i < this.kolom-1; i++) {
@@ -70,6 +87,7 @@ public class matriks {
         }
         return false;
     }
+
     // Untuk mencari baris yang hanya terdapat satu angka
     public boolean onlyone (int baris) {
         int nonkosong = 0;
@@ -109,7 +127,7 @@ public class matriks {
         namaFile = scan.nextLine();
         try {
             // baca file
-            File myFile = new File(namaFile);
+            File myFile = new File("test/" + namaFile);
             Scanner scanfile = new Scanner(myFile);
             
             // memindahkan isi file
@@ -170,12 +188,44 @@ public class matriks {
     }
 
     public void tulismatriks() {
+        DecimalFormat df = new DecimalFormat("#.####");
         for (int i = 0; i < this.baris; i++) {
             for (int j = 0; j < this.kolom; j++) {
-                System.out.print(getelmt(i, j)+" ");
+
+                double num = getelmt(i, j);
+                System.out.print(df.format(num)+" ");
             }
             System.out.println();
         }
+    }
+
+    public matriks multiply(matriks m1, matriks m2) {
+        matriks multi = new matriks(m1.baris, m2.kolom);
+        for (int i = 0; i < m1.baris; i++) {
+            for (int j = 0; j < m2.kolom; j++) {
+                int angka = 0;
+                for (int k =0; k < m1.kolom; k++) {
+                    angka += m1.getelmt(i,k)*m2.getelmt(k,j);
+                }
+                multi.setelmt(i, j, angka);
+            }
+        }
+        return multi;
+    }
+
+    public boolean ceknol() {
+        int nol = 0;
+        for(int i = 0; i < this.baris; i++) {
+            for (int  j = 0; j < this.kolom; j++) {
+                if (this.getelmt(i, j) == 0) {
+                    nol += 1;
+                }
+            }
+        }
+        if (nol == this.baris*this.kolom) {
+            return true;
+        }
+        return false;
     }
 
     public void cekswap() {
@@ -220,7 +270,7 @@ public class matriks {
         int parametrik = 0;
         for (int i = 0; i < this.baris; i++) {
             if (isrowempty(i) == true) {
-                if (getelmt(i, this.baris-1) == 0) {
+                if (getelmt(i, this.kolom-1) == 0) {
                     parametrik += 1;
                 }
                 else {
@@ -251,7 +301,56 @@ public class matriks {
             int idx = getidxleadingone(i);
             cekatas(i, idx);
         }
+        int tidakadasolusi = 0;
+        int parametrik = 0;
+        for (int i = 0; i < this.baris; i++) {
+            if (isrowempty(i) == true) {
+                if (getelmt(i, this.kolom-1) == 0) {
+                    parametrik += 1;
+                }
+                else {
+                    tidakadasolusi += 1;
+                }
+            }
+        }
+        if (tidakadasolusi > 0) {
+            System.out.println("Tidak ada solusi");
+        }
+        else if ((parametrik > 0)) { //|| (this.kolom != this.baris)// ) {
+            solusiparametrik ();
+        }
+        else {
+            solusiunik();
+        }
     }
+
+    // public void kramer(double determinanutama) {
+    //     matriks sementara = new matriks(baris, kolom-1);
+    //     double determinan;
+    //     for (int i = 0; i < this.baris; i++) {
+    //         for (int row = 0; row < this.baris; row++) {
+    //             for (int col = 0; col < sementara.kolom; col++) {
+    //                 if (i == col) {
+    //                     sementara.setelmt(row, col, this.getelmt(row, kolom-1));
+    //                 }
+    //                 else {
+    //                     sementara.setelmt(row, col, this.getelmt(row, col));
+    //                 }
+    //             }
+    //         }
+    //         sementara.tulismatriks();
+    //     }
+    // }
+
+    // public void splbalikan() {
+    //     for(int row = 0; row < this.baris; row++ ) {
+    //         double hasil = 0;
+    //         for (int col = 0; col < this.kolom-1; col++) {
+    //             hasil += this.getelmt(row, col)*getelmt(col, this.kolom-1);
+    //         }
+    //         System.out.println(hasil);   
+    //     }
+    // }
 
     public void leadingone(int baris) {
         boolean ketemu = false;
@@ -328,14 +427,128 @@ public class matriks {
     }
 
     public void solusiparametrik() {
-        System.out.println("Parametrik masih susah");
-        double[][] angka = new double[this.kolom-1][10];
-        char[][] huruf = new char[this.kolom-1][10];
-        char[] alfabet = {'a','b','c','d'};
+        double angka[] = new double[this.kolom-1];
+        char nonangka[] = new char[this.kolom-1];
         for (int i = 0; i < this.kolom-1; i++) {
-            angka[i][0] = 100000;
+            angka[i] = 100000;
+            nonangka[i] = 'a';
         }
-        
+        String kalimat[] = new String[this.kolom-1];
+        DecimalFormat df = new DecimalFormat("#.####");
+        char var = 'p';
+        int awal, awalgerak, para;
+        double bilbul;
+        for (int i = this.baris-1; i >= 0; i--) {
+            para = 0;
+            if (isrowempty(i) == true) {
+                continue;
+            }
+            else {
+                if (onlyone(i) == true) {
+                    angka[getidxleadingone(i)] = getelmt(i, this.kolom-1);
+                }
+                else {
+                    awal = getidxleadingone(i);
+                    awalgerak = awal+1;
+                    bilbul = getelmt(i, this.kolom-1);
+                    while (awalgerak < this.kolom-1) {
+                        if (getelmt(i, awalgerak) != 0) {
+                            if ((angka[awalgerak] == 100000) && (nonangka[awalgerak] == 'a')) {
+                                nonangka[awalgerak] = var;
+                                var++;
+                                para++;
+                            }
+                            else if (angka[awalgerak] != 100000) {
+                                bilbul -= getelmt(i, awalgerak) * angka[awalgerak];
+                            }
+                            else if (nonangka[awalgerak] != 'a') {
+                                para++;
+                            }
+                        }
+                        awalgerak += 1;
+                    } 
+                    if (para >= 1) {
+                    String sentence = "";
+                    if (bilbul != 0) {
+                        sentence = sentence + df.format(bilbul);
+                    }
+                    awalgerak = awal + 1;
+                    int pertama = 0;
+                    while (awalgerak < this.kolom-1) {
+                            if (getelmt(i, awalgerak) != 0) {
+                                if(angka[awalgerak] == 100000 || kalimat[awalgerak] != null) {
+                                    String suku = "";
+                                    double koefisien = -1*getelmt(i, awalgerak);
+                                    String koef = df.format(Math.abs(koefisien));
+                                    if (pertama == 0) {
+                                        if (koefisien > 0) {
+                                            if (kalimat[awalgerak] == null) {
+                                                suku += koef + nonangka[awalgerak];
+                                                sentence += suku;
+                                                pertama += 1;
+                                            }
+                                            else {
+                                                suku += koef + "*(" + kalimat[awalgerak]+")"; 
+                                                sentence += suku;
+                                                pertama += 1;
+                                            }
+                                        }
+                                        else {
+                                            if (kalimat[awalgerak] == null) {
+                                                suku += "-" + koef + nonangka[awalgerak];
+                                                sentence += suku;
+                                                pertama += 1;
+                                            }
+                                            else {
+                                                suku +="-" + koef + "*(" + kalimat[awalgerak]+")"; 
+                                                sentence += suku;
+                                                pertama += 1;
+                                            }
+                                        }
+                                    }
+                                    else {
+                                        if (koefisien > 0) {
+                                            if (kalimat[awalgerak] == null) {
+                                            suku += " + " + koef + nonangka[awalgerak];
+                                            sentence += suku;
+                                            }
+                                            else {
+                                            suku += " + " + koef + "* (" + kalimat[awalgerak]+")"; 
+                                            sentence += suku;
+                                            }
+                                        }
+                                        else {
+                                            if (kalimat[awalgerak] == null) {
+                                            suku += " - " + koef + nonangka[awalgerak];
+                                            sentence += suku;
+                                        }
+                                        else {
+                                            suku += " - " + koef + "* (" + kalimat[awalgerak]+")"; 
+                                            sentence += suku;
+                                        }
+                                        }
+                                        
+                                    }
+                                }
+                            }
+                            awalgerak += 1;
+                    }
+                    kalimat[awal] = sentence;
+                }
+                }
+            }
+        }
+        for (int i = 0; i < this.kolom-1; i++) {
+            if (angka[i] != 100000) {
+                System.out.println(angka[i]);
+            }
+            else if (kalimat[i] != null){
+                System.out.println(kalimat[i]);
+            }
+            else {
+                System.out.println(nonangka[i]);
+            }
+        }
     }
 
     public void allzero() {
@@ -346,30 +559,28 @@ public class matriks {
         }
     }
 
-    public void solusiunik() {
-        double[] angka = new double[this.kolom-1];
+    public matriks solusiunik() {
+        matriks angka = new matriks(1, kolom);
         for (int i = 0; i < this.kolom-1; i++) {
-            angka[i] = 100000;
+            angka.setelmt(0, i, 100000);
         }
         
         for (int i = this.baris-1; i >= 0; i--) {
             double totalkanan = 0;
             double totalkiri = getelmt(i, this.kolom-1);
             for (int j = 0; j < this.kolom-1; j++) {
-                if (angka[j] != 100000) {
-                    totalkanan += getelmt(i, j)*angka[j];
+                if (angka.getelmt(0, j) != 100000) {
+                    totalkanan += getelmt(i, j)*angka.getelmt(0, j);
                 }
             }
-            angka[getidxleadingone(i)] = (totalkiri-totalkanan) / getelmt(i, getidxleadingone(i));
+            angka.setelmt(0, getidxleadingone(i),(totalkiri-totalkanan) / getelmt(i, getidxleadingone(i)));
         }
-        for (int i = 0; i < this.kolom-1; i++) {
-            System.out.print(angka[i] + " ");
-        }
+        return angka;
     }
 
     public matriks balikanreduksi (matriks identitas) {
-        matriks gabung = new matriks(baris, kolom*2);
-        matriks balikan = new matriks(baris, kolom);
+        matriks gabung = new matriks(identitas.baris, kolom*2);
+        matriks balikan = new matriks(identitas.baris, kolom);
         for (int i = 0; i < this.baris; i++) {
             for (int j = 0; j < this.kolom; j++) {
                 gabung.setelmt(i, j, getelmt(i, j));
@@ -380,31 +591,36 @@ public class matriks {
                 gabung.setelmt(i, j+this.kolom, identitas.getelmt(i, j));
             }
         }
-        gabung.gaussjordan();
-        for (int i =0; i < gabung.baris; i++) {
-            for (int j = 0; j < gabung.kolom; j++) {
-                System.out.print(gabung.getelmt(i, j)+" ");
-            }
-            System.out.println();
-        }
-        System.out.println();
+        gabung = spl.gaussbalikan(gabung);
+        // for (int i =0; i < gabung.baris; i++) {
+        //     for (int j = 0; j < gabung.kolom; j++) {
+        //         System.out.print(gabung.getelmt(i, j)+" ");
+        //     }
+        //     System.out.println();
+        // }
         for (int i = 0; i < gabung.baris; i++) {
-            for (int j = this.kolom; j < gabung.kolom; j++) {
-                balikan.setelmt(i, j-gabung.baris, gabung.getelmt(i, j));
+            for (int j = identitas.kolom; j < gabung.kolom; j++) {
+                balikan.setelmt(i, j-identitas.kolom, gabung.getelmt(i, j));
             }
         }
         return balikan;
     }
 
     public matriks balikanadjoin() {
-        double determinan = this.determinanbarisreduksi();
+        double determinan = this.determinankofaktor();
         matriks kofaktor = new matriks(baris, kolom);
         if (determinan == 0) {
             kofaktor.allzero();
             return kofaktor;
         }
         else {
-            
+            kofaktor = this.buatkofaktor();
+            kofaktor.transpose();
+            for (int i = 0; i < kofaktor.baris; i++) {
+                for (int j = 0; j < kofaktor.kolom; j++) {
+                    kofaktor.setelmt(i, j, (1/determinan)*kofaktor.getelmt(i, j));
+                }
+            }
         }
         return kofaktor;
     }
@@ -427,15 +643,26 @@ public class matriks {
                         barisawal += 1;
                     }              
                 }
-                if (i+j % 2 == 0) {
+                if ((i+j) % 2 == 0) {
                     kofaktor.setelmt(i, j, tampung.determinanbarisreduksi());
                 }
-                else {
+                else{
                     kofaktor.setelmt(i, j, tampung.determinanbarisreduksi()*-1);
                 }
             }
         }
         return kofaktor;       
+    }
+
+    public void transpose() {
+        double temp;
+        for (int i = 0; i < this.baris; i ++) {
+            for (int j = i; j < this.kolom; j++) {
+                temp = getelmt(i, j);
+                setelmt(i, j, getelmt(j, i));
+                setelmt(j, i, temp);
+            }
+        }
     }
 
     public double determinanbarisreduksi() {
