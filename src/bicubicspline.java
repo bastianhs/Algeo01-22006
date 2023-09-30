@@ -23,8 +23,8 @@ public class bicubicspline {
                     
                     kolom = 0;
                     // iterasi rumus sigma dengan (sigma i = 0..3 (sigma j = 0..3))
-                    for (int i = 0; i <= 3; i++) {
-                        for (int j = 0; j <= 3; j++) {
+                    for (int j = 0; j <= 3; j++) {
+                        for (int i = 0; i <= 3; i++) {
 
                             if (persamaan == 1) { // persamaan 1 = f(x,y)
                                 koefisien_a = Math.pow(x,i) * Math.pow(y,j);
@@ -87,8 +87,8 @@ public class bicubicspline {
         matriks temp = new matriks(4, 4);
         int baris = 0;
 
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
+        for (int j = 0; j < 4; j++) {
+            for (int i = 0; i < 4; i++) {
                 temp.setelmt(i, j, M.getelmt(baris, 0));
                 baris++;
             }
@@ -183,7 +183,7 @@ public class bicubicspline {
             namaFile = scan.nextLine();
             
             // membuat file
-            File file = new File("test/" + namaFile);
+            File file = new File(namaFile);
             if (file.exists()) { // jika filenya sudah ada
                 System.out.println("file " + namaFile + " sudah ada!");
                 System.out.println("Apakah anda ingin mengulangi memasukkan nama file? (y/n)");
@@ -235,8 +235,6 @@ public class bicubicspline {
 
         // mengubah matriks a 16x1 menjadi matriks 4x4
         a_matriks = bcs.Matriks4Kolom(a_matriks);
-        a_matriks.tulismatriks();
-        X.tulismatriks();
 
         // mencari nilai f(a,b)
         bcs.tulisHasil(2, a_matriks, a, b);
