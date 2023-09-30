@@ -108,7 +108,11 @@ public class landing {
 						if (pilihan2 == 1) {
 							matriks identity = new matriks(mat1.getbaris(), mat1.getkolom());
 							identity.identitas(identity.getbaris(), identity.getkolom());
-							mat1 = mat1.balikanreduksi(identity);
+							mat1 = balikan.balikanreduksi(mat1, identity);
+							mat1.tulismatriks();
+						}
+						if (pilihan2 == 2) {
+							mat1 = balikan.balikanadjoin(mat1);
 							mat1.tulismatriks();
 						}
 				} 
