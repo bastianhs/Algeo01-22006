@@ -1,8 +1,10 @@
 package src;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+
 public class landing {
 	public static void main(String[] args){
 		boolean selesai = false;
@@ -161,16 +163,170 @@ public class landing {
                 }
             } else {
                 try {
-                    FileWriter fileWriter = new FileWriter(namaFile);
-                    fileWriter.write("Det(A) = ");
-                    fileWriter.write(Double.toString(determinan));
+                    FileOutputStream fileWriter = new FileOutputStream("test/" + namaFile);;
+                    fileWriter.write("Det(A) = ".getBytes());
+                    fileWriter.write(Double.toString(determinan).getBytes());
             
                     System.out.println("File telah selesai dibuat!");
-                } catch (IOException e) {
-
-                }
+                } catch (IOException e) {}
             }
         }
     }
 
+	public void tulisHasilInvers(matriks invers, int metode) {
+        if (metode == 1) { //menulis ke terminal
+            invers.tulismatriks();
+        } else { //menulis ke txt
+            String namaFile;
+            Scanner scan = new Scanner(System.in);
+            
+            // meminta nama file
+            System.out.println("Masukkan nama file: ");
+            namaFile = scan.nextLine();
+            
+            // membuat file
+            File file = new File("test/" + namaFile);
+            if (file.exists()) { // jika filenya sudah ada
+                System.out.println("file " + namaFile + " sudah ada!");
+                System.out.println("Apakah anda ingin mengulangi memasukkan nama file? (y/n)");
+                String ulang = scan.nextLine();
+                if (ulang.equals("y") || ulang.equals("Y")) {
+                    tulisHasilInvers(invers, metode);
+                } else {
+                    System.out.println("Terima kasih");
+                }
+            } else {
+                try {
+                    FileOutputStream fileWriter = new FileOutputStream("test/" + namaFile);
+                    for (int i = 0; i < invers.getbaris(); i++) {
+						for (int j = 0; j < invers.getkolom(); j++) {
+							fileWriter.write(Double.toString(invers.getelmt(i, j)).getBytes());
+							if (j != invers.getkolom()-1) {
+								fileWriter.write(" ".getBytes());
+							}
+						}
+						fileWriter.write("\n".getBytes());
+					}
+                    System.out.println("File telah selesai dibuat!");
+                } catch (IOException e) {}
+            }
+        }
+	}
+
+	public void tulisHasilSPL(matriks HasilSPL, int metode) {
+		if (metode == 1) { //menulis ke terminal
+			System.out.println("Solusi SPL: ");
+			int subscript = 1;
+			for (int i = 0; i < HasilSPL.getkolom(); i++) {
+				System.out.println("X" + subscript + " = " + HasilSPL.getelmt(0, i) + "\n");
+				subscript++;
+			}
+        } else { //menulis ke txt
+            String namaFile;
+            Scanner scan = new Scanner(System.in);
+            
+            // meminta nama file
+            System.out.println("Masukkan nama file: ");
+            namaFile = scan.nextLine();
+            
+            // membuat file
+            File file = new File("test/" + namaFile);
+            if (file.exists()) { // jika filenya sudah ada
+                System.out.println("file " + namaFile + " sudah ada!");
+                System.out.println("Apakah anda ingin mengulangi memasukkan nama file? (y/n)");
+                String ulang = scan.nextLine();
+                if (ulang.equals("y") || ulang.equals("Y")) {
+                    tulisHasilSPL(HasilSPL, metode);
+                } else {
+                    System.out.println("Terima kasih");
+                }
+            } else {
+                try {
+                    FileOutputStream fileWriter = new FileOutputStream("test/" + namaFile);;
+                    fileWriter.write("Solusi SPL: ".getBytes());
+		
+					int subscript = 1;
+					for (int i = 0; i < HasilSPL.getkolom(); i++) {
+						fileWriter.write("X".getBytes());
+						fileWriter.write(Integer.toString(subscript).getBytes());
+						fileWriter.write(" = ".getBytes());
+						fileWriter.write(Double.toString(HasilSPL.getelmt(0, i)).getBytes());
+						fileWriter.write("\n".getBytes());
+						subscript++;
+					}
+            		System.out.println("File telah selesai dibuat!");
+                } catch (IOException e) {}
+            }
+        }
+	}
+
+	public void tulisHasilInterpolasi(matriks HasilInterpolasi, double x, int metode) {
+        if (metode == 1) { //menulis ke terminal
+			System.out.println("f(x) = ");
+			int pangkat = HasilInterpolasi.getkolom()-1;
+            for (int i = 0; i < HasilInterpolasi.getkolom(); i++) {
+				if (HasilInterpolasi.getelmt(0, i) != 0) {
+					if (pangkat == 0) {
+						System.out.println(Double.toString(HasilInterpolasi.getelmt(0, i)));
+					} else if (pangkat == 1) {
+						System.out.println(Double.toString(HasilInterpolasi.getelmt(0, i)) + "x");
+					} else {
+						System.out.println(Double.toString(HasilInterpolasi.getelmt(0, i)) + "x^" + pangkat);
+					}
+				}
+				pangkat--;
+			}
+			System.out.println();
+			System.out.println("f(" + x + ") = " + interpolasipolinom.carinilai(HasilInterpolasi, x));
+        } else { //menulis ke txt
+            String namaFile;
+            Scanner scan = new Scanner(System.in);
+            
+            // meminta nama file
+            System.out.println("Masukkan nama file: ");
+            namaFile = scan.nextLine();
+            
+            // membuat file
+            File file = new File("test/" + namaFile);
+            if (file.exists()) { // jika filenya sudah ada
+                System.out.println("file " + namaFile + " sudah ada!");
+                System.out.println("Apakah anda ingin mengulangi memasukkan nama file? (y/n)");
+                String ulang = scan.nextLine();
+                if (ulang.equals("y") || ulang.equals("Y")) {
+                    tulisHasilInterpolasi(HasilInterpolasi, x, metode);
+                } else {
+                    System.out.println("Terima kasih");
+                }
+            } else {
+                try {
+                    FileOutputStream fileWriter = new FileOutputStream("test/" + namaFile);;
+                    fileWriter.write("f(x) = ".getBytes());
+					int pangkat = HasilInterpolasi.getkolom()-1;
+					for (int i = 0; i < HasilInterpolasi.getkolom(); i++) {
+						if (HasilInterpolasi.getelmt(0, i) != 0) {
+							if (pangkat == 0) {
+								fileWriter.write(Double.toString(HasilInterpolasi.getelmt(0, i)).getBytes());	
+							} else if (pangkat == 1) {
+								fileWriter.write(Double.toString(HasilInterpolasi.getelmt(0, i)).getBytes());
+								fileWriter.write("x".getBytes());
+							} else {
+								fileWriter.write(Double.toString(HasilInterpolasi.getelmt(0, i)).getBytes());
+								fileWriter.write("x^".getBytes());
+								fileWriter.write(Integer.toString(pangkat).getBytes());
+							}
+						}
+						pangkat--;
+					}
+					fileWriter.write("\n".getBytes());
+					fileWriter.write("f(".getBytes());
+					fileWriter.write(Double.toString(x).getBytes());
+					fileWriter.write(") = ".getBytes());
+					fileWriter.write(Double.toString(interpolasipolinom.carinilai(HasilInterpolasi, x)).getBytes());
+
+                    System.out.println("File telah selesai dibuat!");
+                } catch (IOException e) {}
+            }
+        }
+	}
+	
 }

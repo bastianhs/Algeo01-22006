@@ -1,9 +1,13 @@
+package src;
+
 import java.text.DecimalFormat;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.lang.Math;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import java.text.DecimalFormat;
 import java.util.Scanner;
@@ -56,6 +60,7 @@ public class matriks {
         }
         return identitas;
     }
+
     public void gabung2matriks (matriks mat1, matriks mat2) {
         for (int i = 0; i < mat1.baris; i++) {
             for (int j = 0; j < mat1.kolom; j++) {
@@ -127,7 +132,7 @@ public class matriks {
         namaFile = scan.nextLine();
         try {
             // baca file
-            File myFile = new File("test/" + namaFile);
+            File myFile = new File("test/"+namaFile);
             Scanner scanfile = new Scanner(myFile);
             
             // memindahkan isi file
@@ -196,6 +201,21 @@ public class matriks {
                 System.out.print(df.format(num)+" ");
             }
             System.out.println();
+        }
+    }
+
+    public void tuliskeTXT() {
+        String fileName = "src/puisi.txt";
+        String fileContent = "Belajar membaca dan menulis file di Java!";
+        
+        try {
+            FileWriter fileWriter = new FileWriter(fileName);
+            fileWriter.write(fileContent);
+            fileWriter.close();
+            
+            System.out.println("File sudah ditulis ulang!");
+        } catch (IOException e) {
+            System.out.println("Terjadi kesalahan karena: " + e.getMessage());
         }
     }
 
