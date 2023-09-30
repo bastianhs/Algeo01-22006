@@ -47,11 +47,13 @@ public class spl {
             m.leadingone(i);
             int idx = m.getidxleadingone(i);
             m.cekbawah(i, idx);
+            m.cekswap();
         }
         for (int i = m.baris-1; i >= 0; i--) {
             m.leadingone(i);
             int idx = m.getidxleadingone(i);
             m.cekatas(i, idx);
+            m.cekswap();
         }
         int tidakadasolusi = 0;
         int parametrik = 0;
@@ -80,7 +82,9 @@ public class spl {
     }
 
     public static matriks gaussbalikan(matriks m) {
+        System.out.println("");
         m.cekswap();
+        m.tulismatriks();
         for (int i = 0; i < m.baris; i++) {
             m.leadingone(i);
             int idx = m.getidxleadingone(i);
@@ -90,6 +94,7 @@ public class spl {
             m.leadingone(i);
             int idx = m.getidxleadingone(i);
             m.cekatas(i, idx);
+            m.cekswap();
         }
         return m;
     }

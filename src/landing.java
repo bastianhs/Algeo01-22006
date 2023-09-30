@@ -41,6 +41,12 @@ public class landing {
 						mat2.bacamatriks();
 						gabungan.gabung2matriks(mat1,mat2);
 					}
+					else if (pilihan3 == 2) {
+						mat1.bacamatriksfile();
+						gabungan = gabungan.ubahukuran(mat1.getbaris(), mat1.getkolom());
+						gabungan = mat1;
+						hasil = hasil.ubahukuran(1, mat1.getkolom());
+					}
 						if (pilihan2 == 1) {
 							hasil = spl.gauss(gabungan);
 							hasil.kurangikolom();
@@ -60,7 +66,7 @@ public class landing {
 								System.out.println("Matriks balikan harus memiliki baris dan kolom yang sama");
 							}
 							else {
-								mat1 = mat1.balikanadjoin();
+								mat1 = balikan.balikanadjoin(mat1);
 								if (mat1.ceknol() == true) {
 									System.out.println("Matriks ini tidak memiliki balikan");
 								}
@@ -109,13 +115,52 @@ public class landing {
 							matriks identity = new matriks(mat1.getbaris(), mat1.getkolom());
 							identity.identitas(identity.getbaris(), identity.getkolom());
 							mat1 = balikan.balikanreduksi(mat1, identity);
-							mat1.tulismatriks();
+							if (mat1.ceknol() == true) {
+								System.out.println("Matriks tidak memiliki balikan");
+							}
+							else {
+								mat1.tulismatriks();
+							}
 						}
 						if (pilihan2 == 2) {
 							mat1 = balikan.balikanadjoin(mat1);
-							mat1.tulismatriks();
+							if (mat1.ceknol() == true) {
+								System.out.println("Matriks tidak memiliki balikan");
+							}
+							else {
+								mat1.tulismatriks();
+							}
 						}
-				} 
+				}
+				else if (pilihan == 3) {
+					System.out.println("""
+							Pilih cara penyelasaian:
+							1. Reduksi Baris
+							2. Balikan Adjoin""");
+					int pilihan2 = scan.nextInt();
+					System.out.println("""
+							Masukkan cara input: 
+							1. Input Keyboard
+							2. file txt""");
+					matriks mat1 = new matriks(0, 0);
+					int pilihan3 = scan.nextInt();
+					if (pilihan3 == 1) {
+						System.out.println("Masukkan nilai n");
+						int n = scan.nextInt();
+						mat1 = mat1.ubahukuran(n, n);
+						mat1.bacamatriks();
+					}
+						if (pilihan2 == 1) {
+							double hasil;
+							hasil = determinan.determinanbarisreduksi(mat1);
+							System.out.println(hasil);
+						}
+						if (pilihan2 == 2) {
+							double hasil;
+							hasil = determinan.determinankofaktor(mat1);
+							System.out.println(hasil);
+						}
+				}
 				else if (pilihan == 4) {
 					System.out.println("Masukkan jumlah persamaan:");
 					int persamaan = scan.nextInt();
