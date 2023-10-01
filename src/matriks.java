@@ -199,7 +199,7 @@ public class matriks {
 
     public matriks multiply(matriks m1, matriks m2) {
         matriks multi = new matriks(m1.baris, m2.kolom);
-        for (int i = 0; i < m1.kolom; i++) {
+        for (int i = 0; i < m1.baris; i++) {
             for (int j = 0; j < m2.kolom; j++) {
                 int angka = 0;
                 for (int k =0; k < m1.kolom; k++) {
@@ -258,69 +258,69 @@ public class matriks {
         }
     }
 
-    public void gauss() {
-        for (int i = 0; i < this.baris; i++) {
-            leadingone(i);
-            int idx = getidxleadingone(i);
-            cekbawah(i, idx);
-        }
-        int tidakadasolusi = 0;
-        int parametrik = 0;
-        for (int i = 0; i < this.baris; i++) {
-            if (isrowempty(i) == true) {
-                if (getelmt(i, this.kolom-1) == 0) {
-                    parametrik += 1;
-                }
-                else {
-                    tidakadasolusi += 1;
-                }
-            }
-        }
-        if (tidakadasolusi > 0) {
-            System.out.println("Tidak ada solusi");
-        }
-        else if ((parametrik > 0)) { //|| (this.kolom != this.baris)// ) {
-            solusiparametrik ();
-        }
-        else {
-            solusiunik();
-        }
-    }
+    // public void gauss() {
+    //     for (int i = 0; i < this.baris; i++) {
+    //         leadingone(i);
+    //         int idx = getidxleadingone(i);
+    //         cekbawah(i, idx);
+    //     }
+    //     int tidakadasolusi = 0;
+    //     int parametrik = 0;
+    //     for (int i = 0; i < this.baris; i++) {
+    //         if (isrowempty(i) == true) {
+    //             if (getelmt(i, this.kolom-1) == 0) {
+    //                 parametrik += 1;
+    //             }
+    //             else {
+    //                 tidakadasolusi += 1;
+    //             }
+    //         }
+    //     }
+    //     if (tidakadasolusi > 0) {
+    //         System.out.println("Tidak ada solusi");
+    //     }
+    //     else if ((parametrik > 0)) { //|| (this.kolom != this.baris)// ) {
+    //         solusiparametrik ();
+    //     }
+    //     else {
+    //         solusiunik();
+    //     }
+    // }
 
-    public void gaussjordan() {
-        cekswap();
-        for (int i = 0; i < this.baris; i++) {
-            leadingone(i);
-            int idx = getidxleadingone(i);
-            cekbawah(i, idx);
-        }
-        for (int i = this.baris-1; i >= 0; i--) {
-            leadingone(i);
-            int idx = getidxleadingone(i);
-            cekatas(i, idx);
-        }
-        int tidakadasolusi = 0;
-        int parametrik = 0;
-        for (int i = 0; i < this.baris; i++) {
-            if (isrowempty(i) == true) {
-                if (getelmt(i, this.kolom-1) == 0) {
-                    parametrik += 1;
-                }
-                else {
-                    tidakadasolusi += 1;
-                }
-            }
-        }
-        if (tidakadasolusi > 0) {
-            System.out.println("Tidak ada solusi");
-        }
-        else if ((parametrik > 0)) { //|| (this.kolom != this.baris)// ) {
-            solusiparametrik ();
-        }
-        else {
-            solusiunik();
-        }
-    }
+    // public void gaussjordan() {
+    //     cekswap();
+    //     for (int i = 0; i < this.baris; i++) {
+    //         leadingone(i);
+    //         int idx = getidxleadingone(i);
+    //         cekbawah(i, idx);
+    //     }
+    //     for (int i = this.baris-1; i >= 0; i--) {
+    //         leadingone(i);
+    //         int idx = getidxleadingone(i);
+    //         cekatas(i, idx);
+    //     }
+    //     int tidakadasolusi = 0;
+    //     int parametrik = 0;
+    //     for (int i = 0; i < this.baris; i++) {
+    //         if (isrowempty(i) == true) {
+    //             if (getelmt(i, this.kolom-1) == 0) {
+    //                 parametrik += 1;
+    //             }
+    //             else {
+    //                 tidakadasolusi += 1;
+    //             }
+    //         }
+    //     }
+    //     if (tidakadasolusi > 0) {
+    //         System.out.println("Tidak ada solusi");
+    //     }
+    //     else if ((parametrik > 0)) { //|| (this.kolom != this.baris)// ) {
+    //         solusiparametrik ();
+    //     }
+    //     else {
+    //         solusiunik();
+    //     }
+    // }
 
     public void leadingone(int baris) {
         boolean ketemu = false;
@@ -508,19 +508,14 @@ public class matriks {
                 }
             }
         }
-        for (int i = 0; i < this.kolom-1; i++) {
-            if (angka[i] != 100000) {
-                System.out.print("x" + (i+1) + " = " +df.format(angka[i])+" ");
-            }
-            else if (kalimat[i] != null){
-                System.out.print("x" + (i+1) + " = " +kalimat[i]+" ");
-            }
-            else {
-                System.out.print("x" + (i+1) + " = " + nonangka[i]+" ");
-            }
+        System.out.println("""
+							Masukkan cara output: 
+							1. Tampilkan di terminal
+							2. File txt""");
+		int metode = scan.nextInt();
+        int panjang = this.kolom;
+        landing.tulisHasilSPLparametrik(angka, nonangka, kalimat, metode, panjang-1);
         }
-        System.out.println("");
-    }
 
     public void allzero() {
         for(int i = 0; i < this.baris; i++) {

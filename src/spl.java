@@ -29,7 +29,14 @@ public class spl {
             }
         }
         if (tidakadasolusi > 0) {
-            System.out.println("Tidak ada solusi");
+            Scanner scan = new Scanner(System.in);
+            String kalimat = "Tidak ada solusi.";
+            System.out.println("""
+									Masukkan cara output: 
+									1. Tampilkan di terminal
+									2. File txt""");
+			int metode = scan.nextInt();
+			landing.tulisstring(kalimat, metode);
         }
         else if ((parametrik > 0)  || (m.kolom != m.baris)) {// ) {
             m.solusiparametrik ();
@@ -84,7 +91,6 @@ public class spl {
     public static matriks gaussbalikan(matriks m) {
         System.out.println("");
         m.cekswap();
-        m.tulismatriks();
         for (int i = 0; i < m.baris; i++) {
             m.leadingone(i);
             int idx = m.getidxleadingone(i);

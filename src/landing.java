@@ -1,4 +1,9 @@
 package src;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.*;
 public class landing {
 	public static void main(String[] args){
@@ -29,6 +34,7 @@ public class landing {
 					matriks mat2 = new matriks(0, 1);
 					matriks gabungan = new matriks(0, 0);
 					matriks hasil = new matriks(1, 0);
+					// SPL input terminal
 					if (pilihan3 == 1) {
 						System.out.println("Masukkan jumlah baris dan kolom");
 						int baris = scan.nextInt();
@@ -41,57 +47,104 @@ public class landing {
 						mat2.bacamatriks();
 						gabungan.gabung2matriks(mat1,mat2);
 					}
+					// SPL input txt
 					else if (pilihan3 == 2) {
 						mat1.bacamatriksfile();
 						gabungan = gabungan.ubahukuran(mat1.getbaris(), mat1.getkolom());
 						gabungan = mat1;
 						hasil = hasil.ubahukuran(1, mat1.getkolom());
 					}
+						// SPL gauss
 						if (pilihan2 == 1) {
 							hasil = spl.gauss(gabungan);
 							hasil.kurangikolom();
 							if (hasil.ceknol() == false ) {
-								hasil.tulismatriks();
+								System.out.println("""
+										Masukkan cara output: 
+										1. Tampilkan di terminal
+										2. File txt""");
+								int metode = scan.nextInt();
+								tulisHasilSPL(hasil, metode);
 							}
 						}
 						else if (pilihan2 == 2) {
 							hasil = spl.gaussjordan(gabungan);
 							hasil.kurangikolom();
 							if (hasil.ceknol() == false) {
-								hasil.tulismatriks();
+								System.out.println("""
+										Masukkan cara output: 
+										1. Tampilkan di terminal
+										2. File txt""");
+								int metode = scan.nextInt();
+								tulisHasilSPL(hasil, metode);
 							}
 						}
 						else if (pilihan2 == 3) {
 							if (mat1.getbaris() != mat1.getkolom()) {
-								System.out.println("Matriks balikan harus memiliki baris dan kolom yang sama");
+								String kalimat = "Matriks balikan harus memiliki baris dan kolom yang sama";
+								System.out.println("""
+									Masukkan cara output: 
+									1. Tampilkan di terminal
+									2. File txt""");
+								int metode = scan.nextInt();
+								tulisstring(kalimat, metode);
 							}
 							else {
 								mat1 = balikan.balikanadjoin(mat1);
 								if (mat1.ceknol() == true) {
-									System.out.println("Matriks ini tidak memiliki balikan");
+									String kalimat = "Matriks tidak memiliki balikan";
+									System.out.println("""
+										Masukkan cara output: 
+										1. Tampilkan di terminal
+										2. File txt""");
+									int metode = scan.nextInt();
+									tulisstring(kalimat, metode);
 								}
 								else {
 									hasil = spl.splbalikan(gabungan);
-									hasil.tulismatriks();
+									System.out.println("""
+										Masukkan cara output: 
+										1. Tampilkan di terminal
+										2. File txt""");
+									int metode = scan.nextInt();
+									tulisHasilSPL(hasil, metode);
 								}
 							}
 						}
 						else if (pilihan2 == 4) {
 							if (mat1.getbaris() != mat1.getkolom()) {
-								System.out.println("Kaidah cramer harus memiliki baris dan kolom yang sama");
+								String kalimat = "Kaidah cramer harus memiliki baris dan kolom yang sama";
+								System.out.println("""
+										Masukkan cara output: 
+										1. Tampilkan di terminal
+										2. File txt""");
+									int metode = scan.nextInt();
+									tulisstring(kalimat, metode);
 							}
 							else {
 								double determinanutama = mat1.determinankofaktor();
 								if (determinanutama == 0) {
-									System.out.println("Determinan sama dengan 0");
+									String kalimat = "Determinan sama dengan 0";
+									System.out.println("""
+										Masukkan cara output: 
+										1. Tampilkan di terminal
+										2. File txt""");
+									int metode = scan.nextInt();
+									tulisstring(kalimat, metode);
 								}
 								else {
 									hasil = spl.kramer(determinanutama,gabungan);
-									hasil.tulismatriks();
+									System.out.println("""
+										Masukkan cara output: 
+										1. Tampilkan di terminal
+										2. File txt""");
+									int metode = scan.nextInt();
+									tulisHasilSPL(hasil, metode);
 								}
 							}
 						}
 				}
+				// Balikan
 				else if (pilihan == 2) {
 					System.out.println("""
 							Pilih cara penyelasaian:
@@ -111,24 +164,48 @@ public class landing {
 						mat1 = mat1.ubahukuran(n, n);
 						mat1.bacamatriks();
 					}
+					// Balikan reduksi baris
 						if (pilihan2 == 1) {
 							matriks identity = new matriks(mat1.getbaris(), mat1.getkolom());
 							identity.identitas(identity.getbaris(), identity.getkolom());
 							mat1 = balikan.balikanreduksi(mat1, identity);
 							if (mat1.ceknol() == true) {
-								System.out.println("Matriks tidak memiliki balikan");
+								String kalimat = "Matriks tidak memiliki balikan";
+								System.out.println("""
+										Masukkan cara output: 
+										1. Tampilkan di terminal
+										2. File txt""");
+								int metode = scan.nextInt();
+								tulisstring(kalimat, metode);
 							}
 							else {
-								mat1.tulismatriks();
+								System.out.println("""
+										Masukkan cara output: 
+										1. Tampilkan di terminal
+										2. File txt""");
+								int metode = scan.nextInt();
+								tulismatriksfile(mat1, metode);
 							}
 						}
+						// Balikan kofaktor
 						if (pilihan2 == 2) {
 							mat1 = balikan.balikanadjoin(mat1);
 							if (mat1.ceknol() == true) {
-								System.out.println("Matriks tidak memiliki balikan");
+								String kalimat = "Matriks tidak memiliki balikan";
+								System.out.println("""
+										Masukkan cara output: 
+										1. Tampilkan di terminal
+										2. File txt""");
+								int metode = scan.nextInt();
+								tulisstring(kalimat, metode);
 							}
 							else {
-								mat1.tulismatriks();
+								System.out.println("""
+										Masukkan cara output: 
+										1. Tampilkan di terminal
+										2. File txt""");
+								int metode = scan.nextInt();
+								tulismatriksfile(mat1, metode);
 							}
 						}
 				}
@@ -153,12 +230,22 @@ public class landing {
 						if (pilihan2 == 1) {
 							double hasil;
 							hasil = determinan.determinanbarisreduksi(mat1);
-							System.out.println(hasil);
+							System.out.println("""
+							Masukkan cara output: 
+							1. Tampilkan di terminal
+							2. File txt""");
+							int metode = scan.nextInt();
+							tulisHasilDeterminan(hasil,metode);
 						}
 						if (pilihan2 == 2) {
 							double hasil;
 							hasil = determinan.determinankofaktor(mat1);
-							System.out.println(hasil);
+							System.out.println("""
+							Masukkan cara output: 
+							1. Tampilkan di terminal
+							2. File txt""");
+							int metode = scan.nextInt();
+							tulisHasilDeterminan(hasil,metode);
 						}
 				}
 				else if (pilihan == 4) {
@@ -177,5 +264,224 @@ public class landing {
 					System.out.println(hasilpersamaan);
 				}
 		}
+	}
+
+public static void tulisHasilDeterminan(double determinan, int metode) {
+        if (metode == 1) { //menulis ke terminal
+            System.out.println("Det(A) = " + determinan);
+        } else { //menulis ke txt
+            String namaFile;
+            Scanner scan = new Scanner(System.in);
+            
+            // meminta nama file
+            System.out.println("Masukkan nama file: ");
+            namaFile = scan.nextLine();
+            
+            // membuat file
+            File file = new File("test/" + namaFile);
+            if (file.exists()) { // jika filenya sudah ada
+                System.out.println("file " + namaFile + " sudah ada!");
+                System.out.println("Apakah anda ingin mengulangi memasukkan nama file? (y/n)");
+                String ulang = scan.nextLine();
+                if (ulang.equals("y") || ulang.equals("Y")) {
+                    tulisHasilDeterminan(determinan, metode);
+                } else {
+                    System.out.println("Terima kasih");
+                }
+            } else {
+                try {
+                    FileOutputStream fileWriter = new FileOutputStream("test/" + namaFile);;
+                    fileWriter.write("Det(A) = ".getBytes());
+                    fileWriter.write(Double.toString(determinan).getBytes());
+            
+                    System.out.println("File telah selesai dibuat!");
+                } catch (IOException e) {}
+            }
+        }
+    }
+
+public static void tulisHasilSPL(matriks HasilSPL, int metode) {
+		if (metode == 1) { //menulis ke terminal
+			System.out.println("Solusi SPL: ");
+			int subscript = 1;
+			for (int i = 0; i < HasilSPL.getkolom(); i++) {
+				System.out.println("X" + subscript + " = " + HasilSPL.getelmt(0, i) + "\n");
+				subscript++;
+			}
+        } else { //menulis ke txt
+            String namaFile;
+            Scanner scan = new Scanner(System.in);
+            
+            // meminta nama file
+            System.out.println("Masukkan nama file: ");
+            namaFile = scan.nextLine();
+            
+            // membuat file
+            File file = new File("test/" + namaFile);
+            if (file.exists()) { // jika filenya sudah ada
+                System.out.println("file " + namaFile + " sudah ada!");
+                System.out.println("Apakah anda ingin mengulangi memasukkan nama file? (y/n)");
+                String ulang = scan.nextLine();
+                if (ulang.equals("y") || ulang.equals("Y")) {
+                    tulisHasilSPL(HasilSPL, metode);
+                } else {
+                    System.out.println("Terima kasih");
+                }
+            } else {
+                try {
+                    FileOutputStream fileWriter = new FileOutputStream("test/" + namaFile);;
+                    fileWriter.write("Solusi SPL: ".getBytes());
+		
+					int subscript = 1;
+					for (int i = 0; i < HasilSPL.getkolom(); i++) {
+						fileWriter.write("X".getBytes());
+						fileWriter.write(Integer.toString(subscript).getBytes());
+						fileWriter.write(" = ".getBytes());
+						fileWriter.write(Double.toString(HasilSPL.getelmt(0, i)).getBytes());
+						fileWriter.write("\n".getBytes());
+						subscript++;
+					}
+            		System.out.println("File telah selesai dibuat!");
+                } catch (IOException e) {}
+            }
+        }
+	}
+
+	public static void tulisHasilSPLparametrik(double[] angka, char[] nonangka, String[] kalimat ,int metode, int panjang) {
+		if (metode == 1) { //menulis ke terminal
+			System.out.println("Solusi SPL: ");
+			DecimalFormat df = new DecimalFormat("#.####");
+			int subscript = 1;
+			for (int i = 0; i < panjang; i++) {
+				if (angka[i] != 100000) {
+					System.out.print("x" + (i+1) + " = " +df.format(angka[i])+" ");
+				}
+				else if (kalimat[i] != null){
+					System.out.print("x" + (i+1) + " = " +kalimat[i]+" ");
+				}
+				else {
+					System.out.print("x" + (i+1) + " = " + nonangka[i]+" ");
+				}
+			}
+			System.out.println("");
+        } else { //menulis ke txt
+            String namaFile;
+			DecimalFormat df = new DecimalFormat("#.####");
+            Scanner scan = new Scanner(System.in);
+            
+            // meminta nama file
+            System.out.println("Masukkan nama file: ");
+            namaFile = scan.nextLine();
+            
+            // membuat file
+            File file = new File("test/" + namaFile);
+            if (file.exists()) { // jika filenya sudah ada
+                System.out.println("file " + namaFile + " sudah ada!");
+                System.out.println("Apakah anda ingin mengulangi memasukkan nama file? (y/n)");
+                String ulang = scan.nextLine();
+                if (ulang.equals("y") || ulang.equals("Y")) {
+                    tulisHasilSPLparametrik(angka,nonangka,kalimat ,metode, panjang);
+                } else {
+                    System.out.println("Terima kasih");
+                }
+            } else {
+                try {
+                    FileOutputStream fileWriter = new FileOutputStream("test/" + namaFile);;
+                    fileWriter.write("Solusi SPL: ".getBytes());
+		
+					int subscript = 1;
+					for (int i = 0; i < panjang; i++) {
+						fileWriter.write("X".getBytes());
+						fileWriter.write(Integer.toString(subscript).getBytes());
+						fileWriter.write(" = ".getBytes());
+						if (angka[i] != 100000) {
+							fileWriter.write(df.format(angka[i]).getBytes());
+						}
+						else if (kalimat[i] != null) {
+							fileWriter.write(kalimat[i].getBytes());
+						}
+						else {
+							fileWriter.write(Character.toString(nonangka[i]).getBytes());
+						}
+						fileWriter.write("\n".getBytes());
+						subscript++;
+					}
+            		System.out.println("File telah selesai dibuat!");
+                } catch (IOException e) {}
+            }
+        }
+	}
+
+	public static void tulisstring(String kalimat, int metode) {
+        if (metode == 1) { //menulis ke terminal
+            System.out.println(kalimat);
+        } else { //menulis ke txt
+            String namaFile;
+            Scanner scan = new Scanner(System.in);
+            
+            // meminta nama file
+            System.out.println("Masukkan nama file: ");
+            namaFile = scan.nextLine();
+            
+            // membuat file
+            File file = new File("test/" + namaFile);
+            if (file.exists()) { // jika filenya sudah ada
+                System.out.println("file " + namaFile + " sudah ada!");
+                System.out.println("Apakah anda ingin mengulangi memasukkan nama file? (y/n)");
+                String ulang = scan.nextLine();
+                if (ulang.equals("y") || ulang.equals("Y")) {
+                    tulisstring(kalimat, metode);
+                } else {
+                    System.out.println("Terima kasih");
+                }
+            } else {
+                try {
+                    FileOutputStream fileWriter = new FileOutputStream("test/" + namaFile);;
+                    fileWriter.write(kalimat.getBytes());
+                    System.out.println("File telah selesai dibuat!");
+                } catch (IOException e) {}
+            }
+        }
+    }
+
+	public static void tulismatriksfile(matriks m, int metode) {
+		if (metode == 1) { //menulis ke terminal
+			m.tulismatriks();
+        } else { //menulis ke txt
+            String namaFile;
+            Scanner scan = new Scanner(System.in);
+            
+            // meminta nama file
+            System.out.println("Masukkan nama file: ");
+            namaFile = scan.nextLine();
+            
+            // membuat file
+            File file = new File("test/" + namaFile);
+            if (file.exists()) { // jika filenya sudah ada
+                System.out.println("file " + namaFile + " sudah ada!");
+                System.out.println("Apakah anda ingin mengulangi memasukkan nama file? (y/n)");
+                String ulang = scan.nextLine();
+                if (ulang.equals("y") || ulang.equals("Y")) {
+                    tulismatriksfile(m, metode);
+                } else {
+                    System.out.println("Terima kasih");
+                }
+            } else {
+                try {
+                    FileOutputStream fileWriter = new FileOutputStream("test/" + namaFile);;
+					DecimalFormat df = new DecimalFormat("#.####");
+					for (int i = 0; i < m.getbaris(); i++) {
+						for (int j = 0; j < m.getkolom(); j++) {
+							fileWriter.write(df.format(m.getelmt(0, i)).getBytes());
+							if (j != m.getkolom()-1) {
+								fileWriter.write(" ".getBytes());
+							}
+						}
+						fileWriter.write("\n".getBytes());
+					}
+            		System.out.println("File telah selesai dibuat!");
+                } catch (IOException e) {}
+            }
+        }
 	}
 }
