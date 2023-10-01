@@ -15,7 +15,8 @@ public class landing {
 					1. SPL
 					2. Balikan
 					3. Determinan
-					4. Interpolasi Polinom""");
+					4. Interpolasi Polinom
+					5. Regresi Linear Berganda""");
 			int pilihan = scan.nextInt();
 				if (pilihan == 1) {
 					System.out.println("""
@@ -263,6 +264,122 @@ public class landing {
 					hasil.tulismatriks();
 					System.out.println(hasilpersamaan);
 				}
+                // Menjalankan menu regresi linear berganda
+				else if (pilihan == 5) {
+					System.out.println("""
+                        ====================================================
+                        Regresi Linear Berganda / Multiple Linear Regression
+                        ====================================================
+                        """);
+                    
+                    // Skip spasi dari terminal
+                    String inputMode = scan.nextLine();
+                    
+                    // Memilih cara input data
+                    while (true) {
+                        System.out.println("""
+                            Pilihan cara input data:
+                            1. Terminal
+                            2. File .txt
+                            """);
+                        System.out.print("Masukkan nomor pilihan yang diinginkan: ");
+                        inputMode = scan.nextLine();
+                        if (inputMode.equals("1") | inputMode.equals("2")) {
+                            break;
+                        }
+                        System.out.println("Pilihan tidak valid !\n");
+                    }
+
+                    matriks sampleData = null;
+                    matriks newXValues = null; // menyimpan nilai-nilai xk untuk diprediksi nilai y-nya
+                    // Jika memilih terminal:
+                    if (inputMode.equals("1")) {
+                        // Memasukkan banyak peubah x
+                        int numberOfX = 0;
+                        while (true) {
+                            System.out.print("Masukkan banyaknya peubah x: ");
+                            String stringNumberOfX = scan.nextLine();
+                            try {
+                                numberOfX = Integer.parseInt(stringNumberOfX);
+                                break;
+                            } catch (NumberFormatException nfe) {
+                                System.out.println("Nilai tidak valid !\n");
+                            }
+                        }
+                        
+                        // Memasukkan banyak sampel
+                        int numberOfSample = 0;
+                        while (true) {
+                            System.out.print("Masukkan banyaknya sampel: ");
+                            String stringNumberOfSample = scan.nextLine();
+                            try {
+                                numberOfSample = Integer.parseInt(stringNumberOfSample);
+                                break;
+                            } catch (NumberFormatException nfe) {
+                                System.out.println("Nilai tidak valid !\n");
+                            }
+                        }
+
+                        // Memasukkan x1i, x2i, x3i, ..., xni, yi
+                        sampleData = new matriks(numberOfSample, numberOfX + 1);
+                        System.out.println("\nMasukkan nilai x1i, x2i, x3i, ..., xni, yi:");
+                        sampleData.bacamatriks();
+                        
+                        // Memasukkan x1k, x2k, x3k, ..., xnk
+                        newXValues = new matriks(1, numberOfX);
+                        System.out.println("\nMasukkan nilai x1k, x2k, x3k, ..., xnk:");
+                        newXValues.bacamatriks();
+                    }
+                    // Jika memilih file .txt
+                    else {
+                        /*
+                         * skip dulu
+                         * akan didapat semua data sample dan
+                         * nilai-nilai xk untuk diprediksi nilai y-nya
+                         */
+                    }
+
+                    /*
+                     * Belum ada validasi setelah
+                     * memasukkan sampel atau nilai-nilai xk
+                     */
+
+                    // Mencari persamaan regresi
+                    matriks regressionEquation = MultipleLinearRegression.findEquation(sampleData);
+                    String displayRegressionEquation = regressionEquationMatrixToString(regressionEquation);
+
+                    // Mencari taksiran nilai y
+                    double newY = MultipleLinearRegression.predict(regressionEquation, newXValues);
+                    String displayNewY = approximationValueToString(newXValues, newY);
+
+                    // Memilih cara output data
+                    String outputMode = null;
+                    while (true) {
+                        System.out.println("""
+                            \nPilihan cara output data:
+                            1. Terminal
+                            2. File .txt
+                            """);
+                        System.out.print("Masukkan nomor pilihan yang diinginkan: ");
+                        outputMode = scan.nextLine();
+                        if (outputMode.equals("1") | outputMode.equals("2")) {
+                            break;
+                        }
+                        System.out.println("Pilihan tidak valid !\n");
+                    }
+
+                    // Jika memilih terminal
+                    if (outputMode.equals("1")) {
+                        System.out.println("\nPersamaan regresi:");
+                        System.out.println(displayRegressionEquation + "\n");
+                        System.out.println("Taksiran nilai y:");
+                        System.out.println(displayNewY + "\n");
+                    }
+                    // Jika memilih file .txt
+                    else {
+
+                    }
+				}
 		}
 	}
 
@@ -484,4 +601,43 @@ public static void tulisHasilSPL(matriks HasilSPL, int metode) {
             }
         }
 	}
+
+
+    // Mengkonversi persamaan dalam bentuk matriks menjadi string untuk ditampilkan kepada pengguna
+    private static String regressionEquationMatrixToString(matriks regressionEquation) {
+        String stringForm = "f(x) = ";
+        for (int i = 0; i < regressionEquation.getkolom(); i++) {
+            double bValue = regressionEquation.getelmt(0, i);
+            if (i == 0) {
+                stringForm += Double.toString(bValue);
+            }
+            else {
+                if (bValue < 0) {
+                    stringForm += " - ";
+                    stringForm += Double.toString(-bValue);
+                }
+                else {
+                    stringForm += " + ";
+                    stringForm += Double.toString(bValue);
+                }
+                
+                stringForm += "x" + i;
+            }
+        }
+        
+        return stringForm;
+    }
+
+
+    // Mengkonversi hasil taksiran dari persamaan regresi linear berganda untuk ditampilkan kepada pengguna
+    private static String approximationValueToString(matriks independentVariables, double approximationValue) {
+        String stringForm = "f(";
+        stringForm += independentVariables.getelmt(0, 0);
+        for (int i = 1; i < independentVariables.getkolom(); i++) {
+            stringForm += ", " + independentVariables.getelmt(0, i);
+        }
+
+        stringForm += ") = " + approximationValue;
+        return stringForm;
+    }
 }
