@@ -1,10 +1,15 @@
 package src;
+
+
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.*;
+
+
 public class landing {
 	public static void main(String[] args){
 		boolean selesai = false;
@@ -377,7 +382,20 @@ public class landing {
                     }
                     // Jika memilih file .txt
                     else {
-
+                        BufferedWriter writer;
+                        while (true) {
+                            System.out.println("\nMasukkan lokasi/path file .txt (test/): ");
+                            String path = scan.nextLine();
+                            try {
+                                writer = new BufferedWriter(new FileWriter("test/" + path));
+                                writer.write(displayRegressionEquation);
+                                writer.write("\n" + displayNewY);
+                                writer.close();
+                                break;
+                            } catch (IOException e) {
+                                System.out.println("Path file .txt tidak valid !");
+                            }
+                        }
                     }
 				}
 		}
@@ -607,18 +625,19 @@ public static void tulisHasilSPL(matriks HasilSPL, int metode) {
     private static String regressionEquationMatrixToString(matriks regressionEquation) {
         String stringForm = "f(x) = ";
         for (int i = 0; i < regressionEquation.getkolom(); i++) {
+            DecimalFormat decimalFormatter = new DecimalFormat("#.####");
             double bValue = regressionEquation.getelmt(0, i);
             if (i == 0) {
-                stringForm += Double.toString(bValue);
+                stringForm += decimalFormatter.format(bValue);
             }
             else {
                 if (bValue < 0) {
                     stringForm += " - ";
-                    stringForm += Double.toString(-bValue);
+                    stringForm += decimalFormatter.format(-bValue);
                 }
                 else {
                     stringForm += " + ";
-                    stringForm += Double.toString(bValue);
+                    stringForm += decimalFormatter.format(bValue);
                 }
                 
                 stringForm += "x" + i;
@@ -632,12 +651,13 @@ public static void tulisHasilSPL(matriks HasilSPL, int metode) {
     // Mengkonversi hasil taksiran dari persamaan regresi linear berganda untuk ditampilkan kepada pengguna
     private static String approximationValueToString(matriks independentVariables, double approximationValue) {
         String stringForm = "f(";
-        stringForm += independentVariables.getelmt(0, 0);
+        DecimalFormat decimalFormatter = new DecimalFormat("#.####");
+        stringForm += decimalFormatter.format(independentVariables.getelmt(0, 0));
         for (int i = 1; i < independentVariables.getkolom(); i++) {
-            stringForm += ", " + independentVariables.getelmt(0, i);
+            stringForm += ", " + decimalFormatter.format(independentVariables.getelmt(0, i));
         }
 
-        stringForm += ") = " + approximationValue;
+        stringForm += ") = " + decimalFormatter.format(approximationValue);
         return stringForm;
     }
 }
