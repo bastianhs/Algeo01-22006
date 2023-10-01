@@ -1,15 +1,9 @@
 package src;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Scanner;
-
-
-
-import javax.imageio.ImageIO;
 
 public class BicubicSplineInterpolation {
 
@@ -117,66 +111,6 @@ public class BicubicSplineInterpolation {
         return hasil;
     }
 
-    public matriks getD() {
-        // Mendapatkan matriks D berukuran 16x16
-        matriks D = new matriks(16,16);
-        double koefisien;
-        int baris, kolom;
-        
-        baris = 0; // baris [0..15]
-        for (int persamaan = 1; persamaan <= 4; persamaan++) {
-            // iterasi titik (x,y) = (0,0), (1,0), (0,1), (1,1)
-            for (int y = 0; y <= 1; y++) {
-                for (int x = 0; x <= 1; x++) {
-                    
-                    kolom = 0;
-                    // I_x dan I_y adalah indeks piksel untuk f(x,y)
-                    for (int I_y = -1; I_y <= 2; I_y++) {
-                        for (int I_x = -1; I_x <= 2; I_x++) { 
-                            
-                            koefisien = 0;
-                            if (persamaan == 1) { // f(x,y) = I(x,y)
-                                if ((I_x == x) && (I_y == y)) {
-                                    koefisien = 4;
-                                }
-                            } else if (persamaan == 2) { // df(x,y)/dx = (I(x+1,y) - I(x-1,y)) / 2
-                                if (I_y == y) {
-                                    if (I_x == x+1) {
-                                        koefisien = 2;
-                                    } else if (I_x == x-1) {
-                                        koefisien = -2;
-                                    }
-                                }
-                            } else if (persamaan == 3) { // df(x,y)/dy = (I(x,y+1) - I(x,y-1)) / 2
-                                if (I_x == x) {
-                                    if (I_y == y+1) {
-                                        koefisien = 2;
-                                    } else if (I_y == y-1) {
-                                        koefisien = -2;
-                                    }
-                                }
-                            } else { // d^2f(x,y)/dxdy = (I(x+1,y+1) - I(x-1,y) - I(x,y-1) - I(x,y)) / 4
-                                if ((I_x == x+1) && (I_y == y+1)) {
-                                    koefisien = 1;
-                                } else if ((I_x == x-1) && (I_y == y)) {
-                                    koefisien = -1;
-                                } else if ((I_x == x) && (I_y == y-1)) {
-                                    koefisien = -1;
-                                } else if ((I_x == x) && (I_y == y)) {
-                                    koefisien = -1;
-                                }
-                            }
-                            D.setelmt(baris, kolom, koefisien);
-                            kolom++;
-                        }
-                    }
-                    baris++;
-                }
-            }
-        }
-        return D;
-    }
-
     public void tulisHasil(int metode, matriks A, double a, double b) {
         // nilai f(a,b)
         double f_a_b = nilaiFungsi(A, a, b);
@@ -192,7 +126,7 @@ public class BicubicSplineInterpolation {
             namaFile = scan.nextLine();
             
             // membuat file
-            File file = new File("test/" + namaFile);
+            File file = new File("test/output/" + namaFile);
             if (file.exists()) {        // jika filenya sudah ada
                 System.out.println("file " + namaFile + " sudah ada!");
                 System.out.println("Apakah anda ingin mengulangi memasukkan nama file? (y/n)");
@@ -204,7 +138,7 @@ public class BicubicSplineInterpolation {
                 }
             } else {
                 try {
-                    FileOutputStream fileWriter = new FileOutputStream("test/" + namaFile);
+                    FileOutputStream fileWriter = new FileOutputStream("test/output/" + namaFile);
                     fileWriter.write("Nilai f(".getBytes());
                     fileWriter.write(Double.toString(a).getBytes());
                     fileWriter.write(",".getBytes());
@@ -219,21 +153,41 @@ public class BicubicSplineInterpolation {
     }
 
     public static void main(String[] args) {
-        // memindahkan isi txt ke matriks
-        matriks from_txt = new matriks(0,0);
-        from_txt.bacamatriksfile();
-            // jika mengikuti spek, diperoleh matriks 5x4, dimana baris terakhir adalah nilai a, b yang hendak di cari
-        double a = from_txt.getelmt(4,0);
-        double b = from_txt.getelmt(4,1);
-            
-        // mendapatkan matriks X dan inversnya
+        Scanner scan = new Scanner(System.in);
         BicubicSplineInterpolation bcs = new BicubicSplineInterpolation();
+        matriks y = new matriks(16,1);
+        double a, b;
+
+		System.out.println("""
+                            Metode Input:
+                            1. Terminal
+                            2. File .txt""");
+        int pilihan2 = scan.nextInt();
+        
+        if (pilihan2 == 1) {
+            // meminta inputan pengguna
+            matriks from_keyboard = new matriks(4,4);
+            System.out.println("Masukkan nilai fungsi dan turunannya:");
+            from_keyboard.bacamatriks();
+            System.out.print("a = ");
+            a = scan.nextInt();
+            System.out.print("b = ");
+            b = scan.nextInt();
+            // mengubah matriks 4x4 menjadi matriks 16x1
+            y = bcs.Matriks1Kolom(from_keyboard);
+        } else {
+            // memindahkan isi txt ke matriks
+            matriks from_txt = new matriks(0,0);
+            from_txt.bacamatriksfile();
+                // jika mengikuti spek, diperoleh matriks 5x4, dimana baris terakhir adalah nilai a, b yang hendak di cari
+            a = from_txt.getelmt(4,0);
+            b = from_txt.getelmt(4,1);
+            // mengubah matriks 4x4 menjadi matriks 16x1
+            y = bcs.Matriks1Kolom(from_txt);
+        }
+        
         matriks X = bcs.getX();
         matriks Xinv = bcs.getInversX(X);
-
-        // Mengubah matriks 4x4 (dari txt) menjadi matriks 16x1
-        matriks y = new matriks(16,1);
-        y = bcs.Matriks1Kolom(from_txt);
 
         // mencari koeffisien a
         matriks a_matriks = new matriks(16,1);
@@ -244,7 +198,6 @@ public class BicubicSplineInterpolation {
 
         // mencari nilai f(a,b)
         // Masukkan metode output: 1 untuk terminal, 2 untuk txt
-        Scanner scan = new Scanner(System.in);
         System.out.println("""
                             Metode Output:
                             1. Terminal
@@ -253,4 +206,3 @@ public class BicubicSplineInterpolation {
         bcs.tulisHasil(metode, a_matriks, a, b);
     }
 }
-
