@@ -29,9 +29,16 @@ public class spl {
             }
         }
         if (tidakadasolusi > 0) {
-            System.out.println("Tidak ada solusi");
+            Scanner scan = new Scanner(System.in);
+            String kalimat = "Tidak ada solusi.";
+            System.out.println("""
+									Masukkan cara output: 
+									1. Tampilkan di terminal
+									2. File txt""");
+			int metode = scan.nextInt();
+			landing.tulisstring(kalimat, metode);
         }
-        else if ((parametrik > 0)) { //|| (this.kolom != this.baris)// ) {
+        else if ((parametrik > 0)  || (m.kolom != m.baris)) {// ) {
             m.solusiparametrik ();
         }
         else {
@@ -47,11 +54,13 @@ public class spl {
             m.leadingone(i);
             int idx = m.getidxleadingone(i);
             m.cekbawah(i, idx);
+            m.cekswap();
         }
         for (int i = m.baris-1; i >= 0; i--) {
             m.leadingone(i);
             int idx = m.getidxleadingone(i);
             m.cekatas(i, idx);
+            m.cekswap();
         }
         int tidakadasolusi = 0;
         int parametrik = 0;
@@ -69,7 +78,7 @@ public class spl {
             System.out.println("Tidak ada solusi");
             mathasil.allzero();
         }
-        else if ((parametrik > 0)) { //|| (this.kolom != this.baris)// ) {
+        else if ((parametrik > 0)  || (m.kolom-1 != m.baris)) {// ) {
             m.solusiparametrik ();
             mathasil.allzero();
         }
@@ -77,6 +86,23 @@ public class spl {
             mathasil = m.solusiunik();
         }
         return mathasil;
+    }
+
+    public static matriks gaussbalikan(matriks m) {
+        System.out.println("");
+        m.cekswap();
+        for (int i = 0; i < m.baris; i++) {
+            m.leadingone(i);
+            int idx = m.getidxleadingone(i);
+            m.cekbawah(i, idx);
+        }
+        for (int i = m.baris-1; i >= 0; i--) {
+            m.leadingone(i);
+            int idx = m.getidxleadingone(i);
+            m.cekatas(i, idx);
+            m.cekswap();
+        }
+        return m;
     }
 
     public static matriks splbalikan(matriks m) {
