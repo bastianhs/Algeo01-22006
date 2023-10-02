@@ -276,7 +276,7 @@ public class landing {
 					1. Terminal
 					2. File .txt""");
 					int pilihan2 = scan.nextInt();
-					
+
 					if (pilihan2 == 1) {
 						// meminta inputan pengguna
 						matriks from_keyboard = new matriks(4,4);
@@ -312,9 +312,9 @@ public class landing {
 					// mencari nilai f(a,b)
 					// Masukkan metode output: 1 untuk terminal, 2 untuk txt
 					System.out.println("""
-										Metode Output:
-										1. Terminal
-										2. File .txt""");
+					Metode Output:
+					1. Terminal
+					2. File .txt""");
 					int metode = scan.nextInt();
 					bcs.tulisHasil(metode, a_matriks, a, b);
 				}
