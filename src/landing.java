@@ -270,11 +270,11 @@ public class landing {
 					BicubicSplineInterpolation bcs = new BicubicSplineInterpolation();
 					matriks y = new matriks(16,1);
 					double a, b;
-			
+
 					System.out.println("""
-										Metode Input:
-										1. Terminal
-										2. File .txt""");
+					Metode Input:
+					1. Terminal
+					2. File .txt""");
 					int pilihan2 = scan.nextInt();
 					
 					if (pilihan2 == 1) {
