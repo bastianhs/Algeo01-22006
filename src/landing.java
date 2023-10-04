@@ -260,11 +260,80 @@ public class landing {
 					polinompangkat = interpolasipolinom.dipangkat(polinom);
 					hasil = spl.gaussjordan(polinompangkat);
 					hasilpersamaan = interpolasipolinom.carinilai(hasil,nilaix);
-					hasil.tulismatriks();
-					System.out.println(hasilpersamaan);
+					hasil.kurangikolom();
+					System.out.println("""
+							Masukkan cara output: 
+							1. Tampilkan di terminal
+							2. File txt""");
+					int metode = scan.nextInt();
+					tulisHasilInterpolasi(hasil, hasilpersamaan,metode,nilaix);
 				}
 		}
 	}
+public static void tulisHasilInterpolasi(matriks hasil, double hasilpersamaan, int metode, double angka) {
+		DecimalFormat df = new DecimalFormat("#.####");
+        if (metode == 1) { //menulis ke terminal
+            for (int i = hasil.getkolom()-1; i >= 0; i--) {
+				if (i == 0) {
+					System.out.print(df.format(hasil.getelmt(0, i)));
+				}
+				else if (i == 1) {
+					System.out.print(df.format(hasil.getelmt(0, i)) + "x + ");
+				}
+				else {
+					System.out.print(df.format(hasil.getelmt(0, i)) + "x"+i+ " + ");
+				}
+			}
+			System.out.println("");
+			System.out.println("f("+angka+") = "+df.format(hasilpersamaan));
+        } else { //menulis ke txt
+            String namaFile;
+            Scanner scan = new Scanner(System.in);
+            
+            // meminta nama file
+            System.out.println("Masukkan nama file: ");
+            namaFile = scan.nextLine();
+            
+           // membuat file
+            File file = new File("test/" + namaFile);
+            if (file.exists()) { // jika filenya sudah ada
+                System.out.println("file " + namaFile + " sudah ada!");
+                System.out.println("Apakah anda ingin mengulangi memasukkan nama file? (y/n)");
+                String ulang = scan.nextLine();
+                if (ulang.equals("y") || ulang.equals("Y")) {
+                    tulisHasilInterpolasi(hasil, hasilpersamaan, metode, angka);
+                } else {
+                    System.out.println("Terima kasih");
+                }
+            } else {
+                try {
+                    FileOutputStream fileWriter = new FileOutputStream("test/" + namaFile);;
+					for (int i = hasil.getkolom()-1; i >= 0; i--) {
+						if (i == 0) {
+							fileWriter.write(df.format(hasil.getelmt(0, i)).getBytes());
+						}
+						else if (i == 1) {
+							fileWriter.write(df.format(hasil.getelmt(0, i)).getBytes());
+							fileWriter.write(" x + ".getBytes());
+						}
+						else {
+							fileWriter.write(df.format(hasil.getelmt(0, i)).getBytes());
+							fileWriter.write(" x".getBytes());
+							fileWriter.write(Integer.toString(i).getBytes());
+							fileWriter.write(" + ".getBytes());
+						}
+					}
+					fileWriter.write("\n".getBytes());
+					fileWriter.write("f(".getBytes());
+					fileWriter.write(Double.toString(angka).getBytes());
+					fileWriter.write(") = ".getBytes());
+					fileWriter.write(Double.toString(hasilpersamaan).getBytes());
+            
+                    System.out.println("File telah selesai dibuat!");
+                } catch (IOException e) {}
+            }
+         }
+    }
 
 public static void tulisHasilDeterminan(double determinan, int metode) {
         if (metode == 1) { //menulis ke terminal
