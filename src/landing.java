@@ -164,6 +164,9 @@ public class landing {
 						mat1 = mat1.ubahukuran(n, n);
 						mat1.bacamatriks();
 					}
+					else if (pilihan3 == 2) {
+						mat1.bacamatriksfile();
+					}
 					// Balikan reduksi baris
 						if (pilihan2 == 1) {
 							matriks identity = new matriks(mat1.getbaris(), mat1.getkolom());
@@ -227,6 +230,9 @@ public class landing {
 						mat1 = mat1.ubahukuran(n, n);
 						mat1.bacamatriks();
 					}
+					else if (pilihan3 == 2) {
+						mat1.bacamatriksfile();
+					}
 						if (pilihan2 == 1) {
 							double hasil;
 							hasil = determinan.determinanbarisreduksi(mat1);
@@ -249,13 +255,31 @@ public class landing {
 						}
 				}
 				else if (pilihan == 4) {
-					System.out.println("Masukkan jumlah persamaan:");
-					int persamaan = scan.nextInt();
+					System.out.println("""
+							Masukkan cara input: 
+							1. Input Keyboard
+							2. file txt""");
+					int pilihan3 = scan.nextInt();
+					int persamaan = 0;
 					double hasilpersamaan = 0;
-					matriks hasil = new matriks(1, persamaan);
-					matriks polinom = new matriks(persamaan,2);
-					polinom.bacamatriks();
-					double nilaix = scan.nextDouble();
+					matriks hasil = new matriks(0,0);
+					double nilaix = 0;
+					matriks polinom = new matriks(0,0);
+					if (pilihan3 == 1) {
+						System.out.println("Masukkan jumlah persamaan: ");
+						persamaan = scan.nextInt();
+						hasil.ubahukuran(1, persamaan);
+						polinom.ubahukuran(persamaan, 2);
+						nilaix = scan.nextDouble();
+						polinom.bacamatriks();
+					}
+					else if (pilihan3 == 2) {
+						polinom.bacamatriksfile();
+						nilaix = polinom.getelmt(polinom.getbaris()-1, 0);
+						polinom.kurangibaris();
+						hasil.ubahukuran(1,polinom.getbaris());
+						persamaan = polinom.getbaris();
+					}
 					matriks polinompangkat = new matriks(persamaan, persamaan+1);
 					polinompangkat = interpolasipolinom.dipangkat(polinom);
 					hasil = spl.gaussjordan(polinompangkat);
