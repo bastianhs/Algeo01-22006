@@ -337,17 +337,23 @@ public class landing {
                     }
                     // Jika memilih file .txt
                     else {
-                        /*
-                         * skip dulu
-                         * akan didapat semua data sample dan
-                         * nilai-nilai xk untuk diprediksi nilai y-nya
-                         */
+						// Mengambil semua data dari .txt
+						System.out.println("\nMembaca raw data...");
+                        matriks rawData = new matriks(0, 0);
+						rawData.bacamatriksfile();
+						
+						// Mengambil nilai-nilai x yang akan diprediksi nilai y-nya
+						System.out.println("\nMengambil nilai-nilai x yang akan diprediksi nilai y-nya...");
+						newXValues = new matriks(1, rawData.getkolom() - 1);
+						for (int i = 0; i < rawData.getkolom() - 1; i++) {
+							newXValues.setelmt(0, i, rawData.getelmt(rawData.getbaris() - 1, i));
+						}
+						
+						// Mengambil semua sample
+						System.out.println("\nMengambil semua sampel...");
+						rawData.kurangibaris();
+						sampleData = rawData;
                     }
-
-                    /*
-                     * Belum ada validasi setelah
-                     * memasukkan sampel atau nilai-nilai xk
-                     */
 
                     // Mencari persamaan regresi
                     matriks regressionEquation = MultipleLinearRegression.findEquation(sampleData);
@@ -624,7 +630,7 @@ public static void tulisHasilSPL(matriks HasilSPL, int metode) {
     // Mengkonversi persamaan dalam bentuk matriks menjadi string untuk ditampilkan kepada pengguna
     private static String regressionEquationMatrixToString(matriks regressionEquation) {
         String stringForm = "f(x) = ";
-        for (int i = 0; i < regressionEquation.getkolom(); i++) {
+        for (int i = 0; i < regressionEquation.getkolom() - 1 /* matriks regresinya kelebihan 1 kolom */; i++) {
             DecimalFormat decimalFormatter = new DecimalFormat("#.####");
             double bValue = regressionEquation.getelmt(0, i);
             if (i == 0) {

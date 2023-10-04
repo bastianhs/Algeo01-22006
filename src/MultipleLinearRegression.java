@@ -6,15 +6,13 @@ public abstract class MultipleLinearRegression {
 
     public static matriks findEquation(matriks sampleData) {
         matriks normalEstimationEquation = findNormalEstimationEquation(sampleData);
-        matriks temp = spl.gaussjordan(normalEstimationEquation);
-        System.out.println(temp.matrix[0].length);
-        return temp;
+        return spl.gaussjordan(normalEstimationEquation);
     }
 
 
     public static double predict(matriks equation, matriks independentVariables) {
         double sum = 0;
-        for (int i = 0; i < equation.getkolom() - 1 /* matrik hasilnya kelebihan 1 kolom */; i++) {
+        for (int i = 0; i < equation.getkolom() - 1 /* matriks regresinya kelebihan 1 kolom */; i++) {
             double term = equation.getelmt(0, i);
             if (i > 0) {
                 term *= independentVariables.getelmt(0, i - 1);
