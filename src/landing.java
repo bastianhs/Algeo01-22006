@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-public class landing {
+public class Landing {
 	public static void main(String[] args) {
 		boolean selesai = false;
 		Scanner scan = new Scanner(System.in);
