@@ -23,9 +23,10 @@ Program ini adalah program manipulasi matriks yang dapat digunakan untuk mencari
     ```
     cd Algeo01-22006
     ```
-3. Copy file Landing.class dari folder bin ke folder src
+3. Buat file class di folder src
+   (Filenya error jika dijalankan langsung di folder bin)
     ```
-    cp bin/Landing.class src/Landing.class
+    javac src/Landing.java
     ```
 3. Jalankan program
     ```
