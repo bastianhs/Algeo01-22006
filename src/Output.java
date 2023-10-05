@@ -10,7 +10,7 @@ public class Output {
 
     // Tulis pemisah ke layar
     public static void Pemisah() {
-        System.out.println("====================================================================================================");
+        System.out.println("=================================================================================");
     }
 
     // Pembukaan program
@@ -83,11 +83,12 @@ public class Output {
 
     // Tulis hasil SPL (Solusi Unik) ke layar atau ke file
     public static void tulisHasilSPL(matriks HasilSPL, int metode) {
+        DecimalFormat df = new DecimalFormat("#.####");
 		if (metode == 1) {                                  // menulis ke terminal
 			System.out.println("Solusi SPL: ");
 			int subscript = 1;
 			for (int i = 0; i < HasilSPL.getkolom(); i++) {
-				System.out.println("X" + subscript + " = " + HasilSPL.getelmt(0, i) + "\n");
+				System.out.println("X" + subscript + " = " + df.format(HasilSPL.getelmt(0, i)));
 				subscript++;
 			}
         } else {                                            // menulis ke txt
@@ -119,7 +120,7 @@ public class Output {
 						fileWriter.write("X".getBytes());
 						fileWriter.write(Integer.toString(subscript).getBytes());
 						fileWriter.write(" = ".getBytes());
-						fileWriter.write(Double.toString(HasilSPL.getelmt(0, i)).getBytes());
+						fileWriter.write(df.format(HasilSPL.getelmt(0, i)).getBytes());
 						fileWriter.write("\n".getBytes());
 						subscript++;
 					}
@@ -144,8 +145,8 @@ public class Output {
 				else {
 					System.out.print("x" + (i+1) + " = " + nonangka[i] + " ");
 				}
+                System.out.println("");
 			}
-			System.out.println("");
         } else {                                            // menulis ke txt
             String namaFile;
 			DecimalFormat df = new DecimalFormat("#.####");
@@ -462,4 +463,3 @@ public class Output {
         return stringForm;
     }
 }
-
