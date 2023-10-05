@@ -18,8 +18,10 @@ public class spl {
         }
         int tidakadasolusi = 0;
         int parametrik = 0;
+        int kosong = 0;
         for (int i = 0; i < m.baris; i++) {
             if (m.isrowempty(i) == true) {
+                kosong += 1;
                 if (m.getelmt(i, m.kolom-1) == 0) {
                     parametrik += 1;
                 }
@@ -38,13 +40,19 @@ public class spl {
 			int metode = scan.nextInt();
 			landing.tulisstring(kalimat, metode);
         }
-        else if ((parametrik > 0)  || (m.kolom != m.baris)) {// ) {
+        else if ((parametrik > 0)  &&  (m.baris-kosong != m.kolom-1)) {// ) {
             m.solusiparametrik ();
+        }
+        else if ((m.baris != m.kolom-1)  &&  (m.baris-kosong != m.kolom-1)) {// ) {
+            m.solusiparametrik ();
+        }
+        else if ((m.baris-kosong == m.kolom)) {
+            mathasil = m.solusiunik();
         }
         else {
             mathasil = m.solusiunik();
         }
-        return mathasil;
+        return mathasil;                                          
     }
 
     public static matriks gaussjordan(matriks m) {
@@ -75,8 +83,14 @@ public class spl {
             }
         }
         if (tidakadasolusi > 0) {
-            System.out.println("Tidak ada solusi");
-            mathasil.allzero();
+            Scanner scan = new Scanner(System.in);
+            String kalimat = "Tidak ada solusi.";
+            System.out.println("""
+									Masukkan cara output: 
+									1. Tampilkan di terminal
+									2. File txt""");
+			int metode = scan.nextInt();
+			landing.tulisstring(kalimat, metode);
         }
         else if ((parametrik > 0)  || (m.kolom-1 != m.baris)) {// ) {
             m.solusiparametrik ();

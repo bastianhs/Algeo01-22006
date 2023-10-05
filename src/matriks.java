@@ -440,7 +440,7 @@ public class matriks {
                     if (para >= 1) {
                     String sentence = "";
                     if (bilbul != 0) {
-                        sentence = sentence + df.format(bilbul);
+                        sentence = sentence + df.format(bilbul) + " + ";
                     }
                     awalgerak = awal + 1;
                     int pertama = 0;
@@ -506,6 +506,12 @@ public class matriks {
                     kalimat[awal] = sentence;
                 }
                 }
+            }
+        }
+        for (int i = 0; i < this.kolom-1; i++) {
+            if (angka[i] == 100000 && kalimat[i] == null && nonangka[i] == 'a') {
+                nonangka[i] = var;
+                var++;
             }
         }
         System.out.println("""
