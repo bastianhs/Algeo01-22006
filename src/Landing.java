@@ -358,6 +358,7 @@ public class Landing {
                     BufferedWriter writer;
                     while (true) {
                         System.out.println("\nMasukkan lokasi/path file .txt (test/output): ");
+						System.out.print(">> ");
                         String path = scan.nextLine();
                         try {
                             writer = new BufferedWriter(new FileWriter("test/output/" + path));

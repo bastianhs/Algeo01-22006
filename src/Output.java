@@ -97,6 +97,7 @@ public class Output {
             
             // meminta nama file
             System.out.println("Masukkan nama file: ");
+            System.out.print(">> ");
             namaFile = scan.nextLine();
             
             // membuat file
@@ -104,6 +105,7 @@ public class Output {
             if (file.exists()) { // jika filenya sudah ada
                 System.out.println("File " + namaFile + " sudah ada!");
                 System.out.println("Apakah anda ingin mengulangi memasukkan nama file? (y/n)");
+                System.out.print(">> ");
                 String ulang = scan.nextLine();
                 if (ulang.equals("y") || ulang.equals("Y")) {
                     tulisHasilSPL(HasilSPL, metode);
@@ -154,6 +156,7 @@ public class Output {
             
             // meminta nama file
             System.out.println("Masukkan nama file: ");
+            System.out.print(">> ");
             namaFile = scan.nextLine();
             
             // membuat file
@@ -161,6 +164,7 @@ public class Output {
             if (file.exists()) { // jika filenya sudah ada
                 System.out.println("File " + namaFile + " sudah ada!");
                 System.out.println("Apakah anda ingin mengulangi memasukkan nama file? (y/n)");
+                System.out.print(">> ");
                 String ulang = scan.nextLine();
                 if (ulang.equals("y") || ulang.equals("Y")) {
                     tulisHasilSPLparametrik(angka,nonangka,kalimat ,metode, panjang);
@@ -205,6 +209,7 @@ public class Output {
             
             // meminta nama file
             System.out.println("Masukkan nama file: ");
+            System.out.print(">> ");
             namaFile = scan.nextLine();
             
             // membuat file
@@ -212,6 +217,7 @@ public class Output {
             if (file.exists()) { // jika filenya sudah ada
                 System.out.println("file " + namaFile + " sudah ada!");
                 System.out.println("Apakah anda ingin mengulangi memasukkan nama file? (y/n)");
+                System.out.print(">> ");
                 String ulang = scan.nextLine();
                 if (ulang.equals("y") || ulang.equals("Y")) {
                     tulisString(kalimat, metode);
@@ -246,6 +252,7 @@ public class Output {
             
             // meminta nama file
             System.out.println("Masukkan nama file: ");
+            System.out.print(">> ");
             namaFile = scan.nextLine();
             
             // membuat file
@@ -253,6 +260,7 @@ public class Output {
             if (file.exists()) { // jika filenya sudah ada
                 System.out.println("file " + namaFile + " sudah ada!");
                 System.out.println("Apakah anda ingin mengulangi memasukkan nama file? (y/n)");
+                System.out.print(">> ");
                 String ulang = scan.nextLine();
                 if (ulang.equals("y") || ulang.equals("Y")) {
                     tulisMatriks(m, metode);
@@ -288,6 +296,7 @@ public class Output {
             
             // meminta nama file
             System.out.println("Masukkan nama file: ");
+            System.out.print(">> ");
             namaFile = scan.nextLine();
             
             // membuat file
@@ -295,6 +304,7 @@ public class Output {
             if (file.exists()) {                            // jika filenya sudah ada
                 System.out.println("File " + namaFile + " sudah ada!");
                 System.out.println("Apakah anda ingin mengulangi memasukkan nama file? (y/n)");
+                System.out.print(">> ");
                 String ulang = scan.nextLine();
                 if (ulang.equals("y") || ulang.equals("Y")) {
                     tulisHasilDeterminan(determinan, metode);
@@ -319,7 +329,7 @@ public class Output {
         if (metode == 1) {                                  // menulis ke terminal
             System.out.print("f(x) = ");
             for (int i = hasil.getkolom()-1; i >= 0; i--) {
-				if (i == 0) {
+				if (i == 0 && hasil.getelmt(0, i) != 0) {
 					System.out.print(df.format(hasil.getelmt(0, i)));
 				} else if (i == 1 && hasil.getelmt(0, i) != 0) {
 					System.out.print(df.format(hasil.getelmt(0, i)) + "x + ");
@@ -337,6 +347,7 @@ public class Output {
             
             // meminta nama file
             System.out.println("Masukkan nama file: ");
+            System.out.print(">> ");
             namaFile = scan.nextLine();
             
            // membuat file
@@ -344,6 +355,7 @@ public class Output {
             if (file.exists()) { // jika filenya sudah ada
                 System.out.println("file " + namaFile + " sudah ada!");
                 System.out.println("Apakah anda ingin mengulangi memasukkan nama file? (y/n)");
+                System.out.print(">> ");
                 String ulang = scan.nextLine();
                 if (ulang.equals("y") || ulang.equals("Y")) {
                     tulisHasilInterpolasi(hasil, hasilpersamaan, metode, angka);
@@ -396,6 +408,7 @@ public class Output {
             
             // meminta nama file
             System.out.println("Masukkan nama file: ");
+            System.out.print(">> ");
             namaFile = scan.nextLine();
             
             // membuat file
@@ -403,6 +416,7 @@ public class Output {
             if (file.exists()) {        // jika filenya sudah ada
                 System.out.println("file " + namaFile + " sudah ada!");
                 System.out.println("Apakah anda ingin mengulangi memasukkan nama file? (y/n)");
+                System.out.print(">> ");
                 String ulang = scan.nextLine();
                 if (ulang.equals("y") || ulang.equals("Y")) {
                     tulisHasilBCS(metode, A, a, b);
