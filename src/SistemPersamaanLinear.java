@@ -35,19 +35,15 @@ public class SistemPersamaanLinear {
             Scanner scan = new Scanner(System.in);
             String kalimat = "Tidak ada solusi.";
             int metode = Output.mintaOutputan();
-            System.out.println("\n");
+            System.out.println("");
 			Output.tulisString(kalimat, metode);
-        }
-        else if ((parametrik > 0)  &&  (m.baris-kosong != m.kolom-1)) {// ) {
+        } else if ((parametrik > 0)  &&  (m.baris-kosong != m.kolom-1)) {
             m.SolusiParametrik();
-        } 
-        else if ((m.baris != m.kolom-1)  &&  (m.baris-kosong != m.kolom-1)) {// ) {
+        } else if ((m.baris != m.kolom-1)  &&  (m.baris-kosong != m.kolom-1)) {
             m.SolusiParametrik();
-        }
-        else if ((m.baris-kosong == m.kolom)) {
+        } else if ((m.baris-kosong == m.kolom)) {
             mathasil = m.SolusiUnik();
-        }
-        else {
+        } else {
             mathasil = m.SolusiUnik();
         }
 
@@ -92,14 +88,10 @@ public class SistemPersamaanLinear {
             System.out.println("\n");
 			Output.tulisString(kalimat, metode);
             mathasil.allzero();
-        }
-
-        else if ((parametrik > 0)  || (m.kolom-1 != m.baris)) {
+        } else if ((parametrik > 0)  || (m.kolom-1 != m.baris)) {
             m.SolusiParametrik ();
             mathasil.allzero();
-        }
-
-        else {
+        } else {
             mathasil = m.SolusiUnik();
         }
 
@@ -161,3 +153,268 @@ public class SistemPersamaanLinear {
         return mathasil;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

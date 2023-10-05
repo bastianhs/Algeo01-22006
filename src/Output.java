@@ -10,7 +10,7 @@ public class Output {
 
     // Tulis pemisah ke layar
     public static void Pemisah() {
-        System.out.println("====================================================================================================");
+        System.out.println("=================================================================================");
     }
 
     // Pembukaan program
@@ -463,4 +463,3 @@ public class Output {
         return stringForm;
     }
 }
-
