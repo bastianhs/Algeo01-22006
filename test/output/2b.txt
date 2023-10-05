@@ -1,0 +1,4 @@
+Solusi SPL: X1 = 0
+X2 = 2
+X3 = 1
+X4 = 1

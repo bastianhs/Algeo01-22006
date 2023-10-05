@@ -1,0 +1,4 @@
+Solusi SPL: X1 = -1 + 1q
+X2 = 2p
+X3 = p
+X4 = q

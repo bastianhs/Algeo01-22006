@@ -37,7 +37,6 @@ public class SistemPersamaanLinear {
             int metode = Output.mintaOutputan();
             System.out.println("\n");
 			Output.tulisString(kalimat, metode);
-            scan.close();
         }
         else if ((parametrik > 0)  &&  (m.baris-kosong != m.kolom-1)) {// ) {
             m.SolusiParametrik();
@@ -87,7 +86,11 @@ public class SistemPersamaanLinear {
         }
 
         if (tidakadasolusi > 0) {
-            System.out.println("Tidak ada solusi");
+            Scanner scan = new Scanner(System.in);
+            String kalimat = "Tidak ada solusi.";
+            int metode = Output.mintaOutputan();
+            System.out.println("\n");
+			Output.tulisString(kalimat, metode);
             mathasil.allzero();
         }
 
