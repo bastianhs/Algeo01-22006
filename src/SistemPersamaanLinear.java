@@ -19,9 +19,10 @@ public class SistemPersamaanLinear {
         
         int tidakadasolusi = 0;
         int parametrik = 0;
-        
+        int kosong = 0;
         for (int i = 0; i < m.baris; i++) {
             if (m.IsRowEmpty(i) == true) {
+                kosong += 1;
                 if (m.getelmt(i, m.kolom-1) == 0) {
                     parametrik += 1;
                 } else {
@@ -37,9 +38,17 @@ public class SistemPersamaanLinear {
             System.out.println("\n");
 			Output.tulisString(kalimat, metode);
             scan.close();
-        } else if ((parametrik > 0)  || (m.kolom != m.baris)) {
-            m.SolusiParametrik ();
-        } else {
+        }
+        else if ((parametrik > 0)  &&  (m.baris-kosong != m.kolom-1)) {// ) {
+            m.SolusiParametrik();
+        } 
+        else if ((m.baris != m.kolom-1)  &&  (m.baris-kosong != m.kolom-1)) {// ) {
+            m.SolusiParametrik();
+        }
+        else if ((m.baris-kosong == m.kolom)) {
+            mathasil = m.SolusiUnik();
+        }
+        else {
             mathasil = m.SolusiUnik();
         }
 

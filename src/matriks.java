@@ -436,6 +436,12 @@ public class matriks {
                 }
             }
         }
+        for (int i = 0; i < this.kolom-1; i++) {
+            if (angka[i] == 100000 && kalimat[i] == null && nonangka[i] == 'a') {
+                nonangka[i] = var;
+                var++;
+            }
+        }
 		
         int metode = Output.mintaOutputan();
         System.out.print("\n");
