@@ -6,7 +6,7 @@ Program ini adalah program manipulasi matriks yang dapat digunakan untuk mencari
 - Balikan matriks
 - Determinan matriks
 - Interpolasi polinomial
-- Regresi inier berganda
+- Regresi linier berganda
 - Bicubic spline interpolation
 
 ## Anggota Kelompok
