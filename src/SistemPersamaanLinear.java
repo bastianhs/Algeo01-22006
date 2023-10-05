@@ -84,14 +84,10 @@ public class SistemPersamaanLinear {
         if (tidakadasolusi > 0) {
             System.out.println("Tidak ada solusi");
             mathasil.allzero();
-        }
-
-        else if ((parametrik > 0)  || (m.kolom-1 != m.baris)) {
+        } else if ((parametrik > 0)  || (m.kolom-1 != m.baris)) {
             m.SolusiParametrik ();
             mathasil.allzero();
-        }
-
-        else {
+        } else {
             mathasil = m.SolusiUnik();
         }
 
