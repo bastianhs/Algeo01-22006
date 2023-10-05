@@ -1,134 +1,77 @@
-![Logo of the project](https://raw.githubusercontent.com/jehna/readme-best-practices/master/sample-logo.png)
+# Tugas Besar 1 Aljabar Linier dan Geometri
+## Sistem Persamaan Linier, Determinan, dan Aplikasinya
 
-# Name of the project
-> Additional information or tagline
+Program ini adalah program manipulasi matriks yang dapat digunakan untuk mencari:
+- Solusi sistem persamaan linier
+- Balikan matriks
+- Determinan matriks
+- Interpolasi polinomial
+- Regresi inier berganda
+- Bicubic spline interpolation
 
-A brief description of your project, what it is used for and how does life get
-awesome when someone starts to use it.
+## Anggota Kelompok
+- Agil Fadillah Sabri (13522006)
+- Bastian Hendramukti Suryapratama (13522034)
+- Haikal Assyauqi (13522052)
 
-## Installing / Getting started
+## Cara Menjalankan Program
+1. Clone repository
+    ```
+    git clone https://github.com/bastianhs/Algeo01-22006.git
+    ```
+2. Masuk ke dalam folder utama project
+    ```
+    cd Algeo01-22006
+    ```
+3. Copy file Landing.class dari folder bin ke folder src
+    ```
+    cp bin/Landing.class src/Landing.class
+    ```
+3. Jalankan program
+    ```
+    java src/Landing
+    ```
 
-A quick introduction of the minimal setup you need to get a hello world up &
-running.
+## Format File Masukan
+1. Untuk file masukan sistem persamaan linier, balikan, dan determinan, format file berupa nilai-nilai yang dipisahkan dengan 1 spasi dalam setiap kolom dan setiap baris diakhiri dengan enter/newline, kecuali baris terakhir.
 
-```shell
-packagemanager install awesome-project
-awesome-project start
-awesome-project "Do something!"  # prints "Nah."
-```
+    Contoh:
+    ```
+    1 1 -1 -1 1
+    2 5 -7 -5 -2
+    2 -1 1 3 4
+    5 2 -4 2 6
+    ```
 
-Here you should say what actually happens when you execute the code above.
+2. Untuk file masukan interpolasi polinom, setiap baris hanya berisi 1 titik yang terdiri dari nilai x dan y (kecuali baris terakhir). Baris terakhir hanya berisi nilai x. Setiap kolom dipisahkan dengan 1 spasi dan setiap baris diakhiri dengan enter/newline, kecuali baris terakhir.
 
-### Initial Configuration
+    Contoh:
+    ```
+    8.0 2.0794
+    9.0 2.1972
+    9.5 2.2513
+    8.3
+    ```
 
-Some projects require initial configuration (e.g. access tokens or keys, `npm i`).
-This is the section where you would document those requirements.
+3. Untuk file masukan regresi linier berganda, setiap baris hanya berisi 1 titik yang terdiri dari n buah nilai x dan 1 buah nilai y dengan urutan dari kiri ke kanan: x1i, x2i, x3i, ..., xni, yi (kecuali baris terakhir). Baris terakhir hanya berisi n buah nilai x. Setiap kolom dipisahkan dengan 1 spasi dan setiap baris diakhiri dengan enter/newline, kecuali baris terakhir.
 
-## Developing
+    Contoh:
+    ```
+    72.4 76.3 29.18 0.90
+    41.6 70.3 29.35 0.91
+    34.3 77.1 29.24 0.96
+    35.1 68.0 29.27 0.89
+    10.7 79.0 29.78 1.00
+    50 76 29.30
+    ```
 
-Here's a brief intro about what a developer must do in order to start developing
-the project further:
+4. Untuk file masukan bicubic spline interpolation, di dalamnya berisi matriks berukuran 4 x 4 yang berisi konfigurasi nilai fungsi dan turunan berarah di sekitarnya, diikuti dengan nilai a dan b untuk mencari nilai f(a, b). Setiap kolom dipisahkan dengan 1 spasi dan setiap baris diakhiri dengan enter/newline, kecuali baris terakhir.
 
-```shell
-git clone https://github.com/your/awesome-project.git
-cd awesome-project/
-packagemanager install
-```
-
-And state what happens step-by-step.
-
-### Building
-
-If your project needs some additional steps for the developer to build the
-project after some code changes, state them here:
-
-```shell
-./configure
-make
-make install
-```
-
-Here again you should state what actually happens when the code above gets
-executed.
-
-### Deploying / Publishing
-
-In case there's some step you have to take that publishes this project to a
-server, this is the right time to state it.
-
-```shell
-packagemanager deploy awesome-project -s server.com -u username -p password
-```
-
-And again you'd need to tell what the previous code actually does.
-
-## Features
-
-What's all the bells and whistles this project can perform?
-* What's the main functionality
-* You can also do another thing
-* If you get really randy, you can even do this
-
-## Configuration
-
-Here you should write what are all of the configurations a user can enter when
-using the project.
-
-#### Argument 1
-Type: `String`  
-Default: `'default value'`
-
-State what an argument does and how you can use it. If needed, you can provide
-an example below.
-
-Example:
-```bash
-awesome-project "Some other value"  # Prints "You're nailing this readme!"
-```
-
-#### Argument 2
-Type: `Number|Boolean`  
-Default: 100
-
-Copy-paste as many of these as you need.
-
-## Contributing
-
-When you publish something open source, one of the greatest motivations is that
-anyone can just jump in and start contributing to your project.
-
-These paragraphs are meant to welcome those kind souls to feel that they are
-needed. You should state something like:
-
-"If you'd like to contribute, please fork the repository and use a feature
-branch. Pull requests are warmly welcome."
-
-If there's anything else the developer needs to know (e.g. the code style
-guide), you should link it here. If there's a lot of things to take into
-consideration, it is common to separate this section to its own file called
-`CONTRIBUTING.md` (or similar). If so, you should say that it exists here.
-
-## Links
-
-Even though this information can be found inside the project on machine-readable
-format like in a .json file, it's good to include a summary of most useful
-links to humans using your project. You can include links like:
-
-- Project homepage: https://your.github.com/awesome-project/
-- Repository: https://github.com/your/awesome-project/
-- Issue tracker: https://github.com/your/awesome-project/issues
-  - In case of sensitive bugs like security vulnerabilities, please contact
-    my@email.com directly instead of using issue tracker. We value your effort
-    to improve the security and privacy of this project!
-- Related projects:
-  - Your other project: https://github.com/your/other-project/
-  - Someone else's project: https://github.com/someones/awesome-project/
-
-
-## Licensing
-
-One really important part: Give your project a proper license. Here you should
-state what the license is and how to find the text version of the license.
-Something like:
-
-"The code in this project is licensed under MIT license."
+    Contoh:
+    ```
+    1 2 3 4
+    5 6 7 8
+    9 10 11 12
+    13 14 15 16
+    0.5 0.5
+    ```
