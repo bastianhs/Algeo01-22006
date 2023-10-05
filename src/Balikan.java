@@ -57,7 +57,7 @@ public class Balikan {
             }
         }
 
-        if (empty > 1) {
+        if (empty > 0) {
             balikan.allzero();
             return balikan;
         }
